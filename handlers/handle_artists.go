@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -13,12 +14,44 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 
 	var artist models.Artist
-	err := utils.Fetch("/artists/"+id, &artist)
-	if err != nil {
+	var location models.Location
+	var relation models.Relation
+	var date models.Date
+
+	// Fetch artist details
+	if err := utils.Fetch("/artists/"+id, &artist); err != nil {
 		RenderError(w, http.StatusNotFound, "404 | Artist not found.")
 		return
 	}
 
+	// Fetch artist locations
+	if err := utils.Fetch("/locations/"+id, &location); err != nil {
+		fmt.Println(err)
+		RenderError(w, http.StatusInternalServerError, "500 | Failed to retrieve locations.")
+		return
+	}
+
+	// Fetch artist relations
+	if err := utils.Fetch("/relation/"+id, &relation); err != nil {
+		RenderError(w, http.StatusInternalServerError, "500 | Failed to retrieve relations.")
+		return
+	}
+
+	// Fetch concert dates
+	if err := utils.Fetch("/dates/"+id, &date); err != nil {
+		RenderError(w, http.StatusInternalServerError, "500 | Failed to retrieve dates.")
+		return
+	}
+
+	// Add fetched data to the artist
+	artist.Location = location
+	artist.Relation = relation
+	artist.Date = date
+	artist.Location.Related_Dates = date.Dates
+	// fmt.Println(artist.Date)
+	// fmt.Println(artist.Location.Related_Dates)
+
+	// Render the artist details template
 	if err := RenderTemplate(w, "artist.html", artist); err != nil {
 		RenderError(w, http.StatusInternalServerError, "500 | Failed to render artist detail page.")
 	}
@@ -37,7 +70,7 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		RenderError(w, http.StatusInternalServerError, "500 | Failed to retrieve artists.")
 		return
 	}
-	
+
 	// Set the Type field based on the number of members
 	for i := range artists {
 		if len(artists[i].Members) == 1 {
