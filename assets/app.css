@@ -1,57 +1,105 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 20px;
+    background: rgb(0, 212, 255);
+
+    background: linear-gradient(45deg, rgba(0, 212, 255, 1) 0%, rgba(11, 3, 45, 1) 100%);
+
+    background-image: url(https://images.unsplash.com/photo-1619204715997-1367fe5812f1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1889&q=80);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+
+
 }
 
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
+a {
+    text-decoration: none;
+    font-family: sans-serif;
+    font-weight: 800;
 }
 
-.artists {
+.container {
+
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .card {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-    width: 300px;
+    backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(17, 25, 40, 0.25);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.125);
+    padding: 20px 10px;
+    filter: drop-shadow(0 30px 10px rgba(0, 0, 0, 0.125));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
+    width: 230px;
+    min-height: 350px;
 }
 
-.card img {
+.wrapper {
     width: 100%;
-    height: auto;
+    height: 100%;
+
 }
 
-.card h2 {
-    font-size: 1.5em;
-    margin: 10px 0;
+.banner-image {
+    background-position: center;
+    background-size: cover;
+    height: 200px;
+    width: 200px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.255)
 }
 
-.card p {
-    font-size: 1em;
-    margin: 10px 20px;
+.card-info {
+    /* border: red 1px solid; */
+    height: 100px;
+    margin-bottom: 5px;
 }
 
-.card .button {
-    display: block;
-    background-color: #007BFF;
-    color: white;
-    padding: 10px;
-    margin: 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: background-color 0.3s;
+h1 {
+    font-family: 'Righteous', sans-serif;
+    color: rgba(255, 255, 255, 0.98);
+    /* text-transform: uppercase; */
+    font-size: 1.3rem;
 }
 
-.card .button:hover {
-    background-color: #0056b3;
+p {
+    color: #fff;
+    text-align: center;
+    font-size: 0.85rem;
+    line-height: 150%;
+    letter-spacing: 2px;
+}
+
+
+.btn {
+    border: none;
+    padding: 12px 24px;
+    border-radius: 24px;
+    font-size: 12px;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+}
+
+.fill {
+    background: rgba(0, 212, 255, 0.9);
+    color: rgba(255, 255, 255, 0.95);
+    filter: drop-shadow(0);
+    font-weight: bold;
+    transition: all .3s ease;
+}
+
+.fill:hover {
+    transform: scale(1.125);
+    border-color: rgba(255, 255, 255, 0.9);
+    filter: drop-shadow(0 10px 5px rgba(0, 0, 0, 0.125));
+    transition: all .3s ease;
 }

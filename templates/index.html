@@ -10,18 +10,24 @@
 </head>
 
 <body>
-    <h1>Artists</h1>
-    <div class="artists">
+    <!-- <h1>Artists</h1> -->
+    <div class="container">
         {{range .Artists}}
         <div class="card">
-            <img src="{{.Image}}" alt="{{.Name}}">
-            <h2>{{.Name}}</h2>
-            <p>Members: {{range .Members}}{{.}}, {{end}}</p>
-            <p>Creation Date: {{.CreationDate}}</p>
-            <a href="/artist/{{.ID}}" class="button">View Details</a>
+            <div class="wrapper">
+                <img class="banner-image" src="{{.Image}}" alt="{{.Name}}">
+                <div class="card-info">
+                    <h1>{{.Name}}</h1>
+                    <p>{{.Type}}</p>
+                </div>
+            </div>
+            <div class="button-wrapper">
+                <a href="/artist/{{.ID}}" class="btn fill">DETAILS</a>
+            </div>
         </div>
         {{end}}
     </div>
+
 </body>
 
 </html>
