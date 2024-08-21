@@ -8,6 +8,7 @@ type Artist struct {
 	Members      []string `json:"members"`
 	CreationDate int      `json:"creationDate"`
 	FirstAlbum   string   `json:"firstAlbum"`
+	Type         string 
 }
 
 type ArtistsPageData struct {

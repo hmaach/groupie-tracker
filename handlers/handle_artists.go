@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 
 	"groupie_tracker/models"
 	"groupie_tracker/utils"
@@ -35,6 +36,15 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		RenderError(w, http.StatusInternalServerError, "500 | Failed to retrieve artists.")
 		return
+	}
+	
+	// Set the Type field based on the number of members
+	for i := range artists {
+		if len(artists[i].Members) == 1 {
+			artists[i].Type = "Artist"
+		} else {
+			artists[i].Type = "Group of " + strconv.Itoa(len(artists[i].Members))
+		}
 	}
 
 	data := models.ArtistsPageData{Artists: artists}
