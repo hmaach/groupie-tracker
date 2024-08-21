@@ -18,7 +18,7 @@
             <h2>{{.Name}}</h2>
             <p>Members: {{range .Members}}{{.}}, {{end}}</p>
             <p>Creation Date: {{.CreationDate}}</p>
-            <a href="/artist?id={{.ID}}" class="button">View Details</a>
+            <a href="/artist/{{.ID}}" class="button">View Details</a>
         </div>
         {{end}}
     </div>
