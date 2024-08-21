@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/app.css">
+    <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+    <title>{{.Name}} - Artist Details</title>
+</head>
+
+<body>
+    <div class="detail-container">
+        <h1>{{.Name}}</h1>
+        <img src="{{.Image}}" alt="{{.Name}}">
+        <p><strong>Members:</strong> {{range .Members}}{{.}}, {{end}}</p>
+        <p><strong>Creation Date:</strong> {{.CreationDate}}</p>
+        <p><strong>First Album:</strong> {{.FirstAlbum}}</p>
+
+        <a href="/" class="button">Back to Artists</a>
+    </div>
+</body>
+
+</html>
