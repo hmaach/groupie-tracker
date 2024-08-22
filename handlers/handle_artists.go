@@ -43,13 +43,14 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Normalize location names
+	location.Locations = utils.NormalizeLocations(location.Locations)
+	relation.DatesLocations = utils.NormalizeDatesLocations(relation.DatesLocations)
+
 	// Add fetched data to the artist
 	artist.Location = location
 	artist.Relation = relation
 	artist.Date = date
-	artist.Location.Related_Dates = date.Dates
-	// fmt.Println(artist.Date)
-	// fmt.Println(artist.Location.Related_Dates)
 
 	// Render the artist details template
 	if err := RenderTemplate(w, "artist.html", artist); err != nil {
@@ -64,7 +65,7 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var artists []models.Artist
+	var artists []models.ArtistSummary
 	err := utils.Fetch("/artists", &artists)
 	if err != nil {
 		RenderError(w, http.StatusInternalServerError, "500 | Failed to retrieve artists.")
@@ -81,6 +82,7 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := models.ArtistsPageData{Artists: artists}
+
 	if err := RenderTemplate(w, "index.html", data); err != nil {
 		RenderError(w, http.StatusInternalServerError, "500 | Failed to render the page.")
 	}
