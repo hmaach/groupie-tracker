@@ -2,7 +2,7 @@
 
 ## Overview
 
-Groupie Tracker is a web application designed to display information about artists, their concert dates, and locations using data from a RESTful API. The application leverages a backend written in Go and a frontend built with HTML to offer a user-friendly interface for exploring and visualizing artist information, concert schedules, and locations.
+Groupie Tracker is a web application designed to display information about artists, their concert dates, and locations using data from a RESTful API. The application is built with a backend written in Go and a frontend using HTML and CSS, offering a user-friendly interface for exploring and visualizing artist information, concert schedules, and locations.
 
 ## Objectives
 
@@ -15,30 +15,16 @@ Groupie Tracker is a web application designed to display information about artis
 The application is divided into four main parts based on the API provided:
 
 1. **Artists**: Contains information about bands and artists, including names, images, the start year of their activity, their first album release date, and members.
-2. **Locations**: Lists the last and upcoming concert locations.
-3. **Dates**: Provides details on the last and upcoming concert dates.
-4. **Relation**: Connects artists, dates, and locations, forming the link between the other components.
+2. **Locations**: Lists the last and upcoming concert locations, with locations normalized to ensure readability.
+3. **Dates**: Provides details on the last and upcoming concert dates, displayed in a visually appealing format.
+4. **Relation**: Connects artists, dates, and locations, forming the link between the other components, allowing for a comprehensive view of artist activities.
 
-## Instructions
+## Features
 
-### Backend
-
-- **Language**: Go
-- **Packages**: Only standard Go packages are used.
-- **Functionality**: The backend handles API requests, processes data, and serves responses to the frontend.
-- **Error Handling**: Ensure the server does not crash, and all pages work correctly. Implement error handling and validation.
-- **Testing**: Unit tests are recommended to ensure code reliability.
-
-### Frontend
-
-- **Language**: HTML
-- **Visualization**: Display data using a variety of UI components such as blocks, cards, tables, lists, and graphics.
-- **Event Handling**: Implement actions triggered by user interactions that communicate with the server to fetch and display data dynamically.
-
-### API Interaction
-
-- **RESTful API**: The frontend communicates with the backend through RESTful API endpoints.
-- **Request-Response**: Implement features that involve client-server requests and handle responses to update the user interface accordingly.
+- **Artist Information**: View details about artists, including images, biographical information, and members. The index page lists all artists with limited information, while detailed views are available for each artist.
+- **Concert Dates and Locations**: Display upcoming and past concert dates for each artist, along with the venues where the concerts are held. Dates are presented in a visually distinctive format.
+- **Interactive Elements**: Engage with various UI components to fetch and view data dynamically, such as clicking on an artist card to view more details.
+- **Styling**: Consistent and professional styling throughout the application, including a polished look for the detail pages and normalization of location names (e.g., converting "florida-usa" to "Florida USA").
 
 ## Setup and Installation
 
@@ -52,23 +38,25 @@ The application is divided into four main parts based on the API provided:
    cd groupie-tracker
    ```
 
-3. **Run the Backend**
+3. **Configure the Application**
+   - Update the `config` package to set the API URL and port number as required.
+
+4. **Run the Backend**
    - Ensure you have Go installed.
-   - Navigate to the backend directory and run the server:
+   - Run the server:
      ```bash
-     cd backend
      go run main.go
      ```
 
-4. **Open the Frontend**
-   - Open the HTML files in your browser to view the application.
+5. **Open the Application**
+   - Open a browser and navigate to `http://localhost:<port_number>` to view the application.
 
-## Features
+## Packages and Structure
 
-- **Artist Information**: View details about artists including images and biographical information.
-- **Concert Dates**: Display upcoming and past concert dates for each artist.
-- **Location Details**: Show the venues for concerts and their details.
-- **Interactive Elements**: Engage with various UI components to fetch and view data dynamically.
+- **`handlers`**: Manages HTTP requests and routes, including fetching data from the API and rendering templates.
+- **`utils`**: Contains utility functions for tasks such as normalizing location names and handling common logic.
+- **`models`**: Defines the data structures used in the application, including separate structs for index and detail views.
+- **`config`**: Holds configuration data, including API URLs and server port numbers.
 
 ## Contributing
 
