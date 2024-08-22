@@ -17,14 +17,14 @@ func NormalizeLocations(locations []string) []string {
 	return locations
 }
 
-// NormalizeDatesLocations processes a map of date locations.
+// NormalizeDatesLocations processes the keys of a map to normalize locations.
 func NormalizeDatesLocations(datesLocations map[string][]string) map[string][]string {
+	normalizedMap := make(map[string][]string)
+
 	for key, locations := range datesLocations {
 		newKey := NormalizeLocation(key)
-		datesLocations[newKey] = NormalizeLocations(locations)
-		if newKey != key {
-			delete(datesLocations, key)
-		}
+		normalizedMap[newKey] = locations
 	}
-	return datesLocations
+
+	return normalizedMap
 }
