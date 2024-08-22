@@ -1,3 +1,5 @@
 package config
 
-const Port = ":8080"
+import "os"
+
+const Port = os.Getenv("PORT")
