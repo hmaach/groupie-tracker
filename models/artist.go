@@ -8,16 +8,14 @@ type Artist struct {
 	Members      []string `json:"members"`
 	CreationDate int      `json:"creationDate"`
 	FirstAlbum   string   `json:"firstAlbum"`
-	Type         string
 	Location     Location
 	Relation     Relation
 	Date         Date
 }
 
 type Location struct {
-	ID        int      `json:"id"`
-	Locations []string `json:"locations"`
-	Related_Dates     []string 
+	ID            int      `json:"id"`
+	Locations     []string `json:"locations"`
 }
 
 type Relation struct {
@@ -30,7 +28,16 @@ type Date struct {
 	Dates []string `json:"dates"`
 }
 
+// this data is for the index page only
+
+type ArtistSummary struct {
+	ID      int      `json:"id"`
+	Name    string   `json:"name"`
+	Image   string   `json:"image"`
+	Members []string `json:"members"`
+	Type    string
+}
 
 type ArtistsPageData struct {
-	Artists []Artist
+	Artists []ArtistSummary
 }
