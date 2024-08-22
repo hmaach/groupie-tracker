@@ -1,20 +1,27 @@
 body {
     background: rgb(0, 212, 255);
-
     background: linear-gradient(45deg, rgba(0, 212, 255, 1) 0%, rgba(11, 3, 45, 1) 100%);
-
     background-image: url(https://images.unsplash.com/photo-1619204715997-1367fe5812f1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1889&q=80);
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-
-
 }
 
 a {
     text-decoration: none;
     font-family: sans-serif;
     font-weight: 800;
+}
+
+.title {
+    font-family: 'Righteous', sans-serif;
+    font-size: 2rem;
+    color: #fff;
+    font-weight: bolder;
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin: 30px auto 30px;
 }
 
 .container {
@@ -58,7 +65,6 @@ a {
 }
 
 .card-info {
-    /* border: red 1px solid; */
     height: 100px;
     margin-bottom: 5px;
 }
@@ -66,13 +72,12 @@ a {
 h1 {
     font-family: 'Righteous', sans-serif;
     color: rgba(255, 255, 255, 0.98);
-    /* text-transform: uppercase; */
     font-size: 1.3rem;
+    text-align: center;
 }
 
 p {
     color: #fff;
-    text-align: center;
     font-size: 0.85rem;
     line-height: 150%;
     letter-spacing: 2px;

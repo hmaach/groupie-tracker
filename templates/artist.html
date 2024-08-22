@@ -14,9 +14,54 @@
     <div class="detail-container">
         <h1>{{.Name}}</h1>
         <img src="{{.Image}}" alt="{{.Name}}">
-        <p><strong>Members:</strong> {{range .Members}}{{.}}, {{end}}</p>
-        <p><strong>Creation Date:</strong> {{.CreationDate}}</p>
-        <p><strong>First Album:</strong> {{.FirstAlbum}}</p>
+
+        <div class="detail-section">
+
+            <div class="detail-line">
+                <span class="details-title">Creation Date:</span>
+                <span class="ship">{{.CreationDate}}</span>
+            </div>
+            <div class="detail-line">
+                <span class="details-title">First Album:</span>
+                <span class="ship">{{.FirstAlbum}}</span>
+            </div>
+            <div class="detail-section">
+                <div class="detail-line">
+                    <h2>Members</h2>
+                    <div class="ship-container">
+                        {{range .Members}}<span class="ship">{{.}}</span>{{end}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-section">
+            <h2>Concerts</h2>
+            {{range $key, $value := .Relation.DatesLocations}}
+            <div class="concert-section">
+                <span class="details-title-2">{{$key}} :</span>
+                <div class="ship-container">
+                    {{range $value}}<span class="ship">{{.}}</span>{{end}}
+                </div>
+            </div>
+            {{end}}
+        </div>
+
+        <div class="detail-section">
+            <h2>Locations</h2>
+            <div class="ship-container">
+                {{range .Location.Locations}}<span class="ship">{{.}}</span>{{end}}
+            </div>
+        </div>
+
+        <div class="detail-section">
+            <h2>Concert Dates</h2>
+            <div class="date-grid">
+                {{range .Date.Dates}}<span class="ship">{{.}}</span>{{end}}
+            </div>
+        </div>
+
+
 
         <a href="/" class="btn fill">Back to Artists</a>
     </div>
