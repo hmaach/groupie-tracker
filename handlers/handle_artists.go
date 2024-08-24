@@ -17,9 +17,6 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 
 	var artist models.Artist
-	var location models.Location
-	var relation models.Relation
-	var date models.Date
 
 	// Fetch artist details
 	err := utils.Fetch("/artists/"+id, &artist)
@@ -33,31 +30,22 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Fetch artist locations
-	if err := utils.Fetch("/locations/"+id, &location); err != nil {
+	if err := utils.Fetch("/locations/"+id, &artist.Location); err != nil {
 		RenderError(w, http.StatusInternalServerError, "500 | Status Internal Server Error")
 		return
 	}
 
 	// Fetch artist relations
-	if err := utils.Fetch("/relation/"+id, &relation); err != nil {
+	if err := utils.Fetch("/relation/"+id, &artist.Relation); err != nil {
 		RenderError(w, http.StatusInternalServerError, "500 | Status Internal Server Error")
 		return
 	}
 
 	// Fetch concert dates
-	if err := utils.Fetch("/dates/"+id, &date); err != nil {
+	if err := utils.Fetch("/dates/"+id, &artist.Date); err != nil {
 		RenderError(w, http.StatusInternalServerError, "500 | Status Internal Server Error")
 		return
 	}
-
-	// Normalize location names
-	location.Locations = utils.NormalizeLocations(location.Locations)
-	relation.DatesLocations = utils.NormalizeDatesLocations(relation.DatesLocations)
-
-	// Add fetched data to the artist
-	artist.Location = location
-	artist.Relation = relation
-	artist.Date = date
 
 	// Render the artist details template
 	if err := RenderTemplate(w, "artist.html", artist); err != nil {
@@ -97,5 +85,6 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 
 	if err := RenderTemplate(w, "index.html", data); err != nil {
 		RenderError(w, http.StatusInternalServerError, "500 | Failed to render the page.")
+		return
 	}
 }
