@@ -10,6 +10,10 @@ import (
 
 // ArtistHandler handles requests to view details of a specific artist.
 func ArtistHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		RenderError(w, http.StatusMethodNotAllowed, "405 | Method Not Allowed: Use GET")
+		return
+	}
 	id := r.PathValue("id")
 
 	var artist models.Artist
@@ -65,6 +69,11 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 func MainHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		RenderError(w, http.StatusNotFound, "404 | The page you are looking for does not exist.")
+		return
+	}
+
+	if r.Method != http.MethodGet {
+		RenderError(w, http.StatusMethodNotAllowed, "405 | Method Not Allowed: Use GET")
 		return
 	}
 
