@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -19,27 +18,31 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	var date models.Date
 
 	// Fetch artist details
-	if err := utils.Fetch("/artists/"+id, &artist); err != nil {
-		RenderError(w, http.StatusNotFound, "404 | Artist not found.")
+	err := utils.Fetch("/artists/"+id, &artist)
+	if err != nil {
+		RenderError(w, http.StatusInternalServerError, "500 | Status Internal Server Error")
+		return
+	}
+	if artist.ID == 0 {
+		RenderError(w, http.StatusNotFound, "404 | Artist Not Found")
 		return
 	}
 
 	// Fetch artist locations
 	if err := utils.Fetch("/locations/"+id, &location); err != nil {
-		fmt.Println(err)
-		RenderError(w, http.StatusInternalServerError, "500 | Failed to retrieve locations.")
+		RenderError(w, http.StatusInternalServerError, "500 | Status Internal Server Error")
 		return
 	}
 
 	// Fetch artist relations
 	if err := utils.Fetch("/relation/"+id, &relation); err != nil {
-		RenderError(w, http.StatusInternalServerError, "500 | Failed to retrieve relations.")
+		RenderError(w, http.StatusInternalServerError, "500 | Status Internal Server Error")
 		return
 	}
 
 	// Fetch concert dates
 	if err := utils.Fetch("/dates/"+id, &date); err != nil {
-		RenderError(w, http.StatusInternalServerError, "500 | Failed to retrieve dates.")
+		RenderError(w, http.StatusInternalServerError, "500 | Status Internal Server Error")
 		return
 	}
 
