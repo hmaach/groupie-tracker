@@ -48,7 +48,7 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Render the artist details template
-	if err := RenderTemplate(w, "artist.html", artist); err != nil {
+	if err := RenderTemplate(w, "artist.html", 200, artist); err != nil {
 		RenderError(w, http.StatusInternalServerError, "500 | Failed to render artist detail page.")
 	}
 }
@@ -83,7 +83,7 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 
 	data := models.ArtistsPageData{Artists: artists}
 
-	if err := RenderTemplate(w, "index.html", data); err != nil {
+	if err := RenderTemplate(w, "index.html", http.StatusOK, data); err != nil {
 		RenderError(w, http.StatusInternalServerError, "500 | Failed to render the page.")
 		return
 	}

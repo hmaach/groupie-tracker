@@ -10,7 +10,7 @@ import (
 
 // RenderError renders an error page with a specific status code and message.
 func RenderError(w http.ResponseWriter, statusCode int, message string) {
-	err := RenderTemplate(w, "error.html", models.ErrorData{
+	err := RenderTemplate(w, "error.html", statusCode, models.ErrorData{
 		Error:   http.StatusText(statusCode),
 		Code:    statusCode,
 		Message: message,
@@ -20,17 +20,20 @@ func RenderError(w http.ResponseWriter, statusCode int, message string) {
 		fmt.Println("Error parsing template:", err)
 		return
 	}
-	w.WriteHeader(statusCode)
 }
 
 // RenderTemplate renders a given HTML template with provided data
-func RenderTemplate(w http.ResponseWriter, tmpl string, data any) error {
+func RenderTemplate(w http.ResponseWriter, tmpl string, statusCode int, data any) error {
 	t, err := template.ParseFiles("templates/" + tmpl)
 	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
 		return err
+	} else {
+		w.WriteHeader(statusCode)
 	}
 	err = t.ExecuteTemplate(w, tmpl, data)
 	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
 		return err
 	}
 	return nil
