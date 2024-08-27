@@ -9,6 +9,9 @@ import (
 )
 
 // ArtistHandler handles requests to view details of a specific artist.
+// It takes an HTTP ResponseWriter to write the response and an HTTP Request.
+// It fetches the artist details, locations, relations, and concert dates from the API.
+// If successful, it renders the artist details page; otherwise, it renders an appropriate error page.
 func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		RenderError(w, http.StatusMethodNotAllowed, "405 | Method Not Allowed: Use GET")
@@ -54,6 +57,9 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // MainHandler handles requests to the root URL and displays the list of artists.
+// It takes an HTTP ResponseWriter to write the response and an HTTP Request.
+// It fetches a summary list of all artists, assigns a type based on the number of members,
+// and renders the index page. If any errors occur, it renders the appropriate error page.
 func MainHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		RenderError(w, http.StatusNotFound, "404 | The page you are looking for does not exist.")

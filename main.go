@@ -10,10 +10,19 @@ import (
 )
 
 func main() {
+	// Serve static files from the "./assets" directory
 	fs := http.FileServer(http.Dir("./assets"))
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
-	http.HandleFunc("/", handlers.MainHandler)
-	http.HandleFunc("/artist/{id}", handlers.ArtistHandler)
-	fmt.Println("Starting the server on : http://localhost" + config.Port)
-	log.Fatal(http.ListenAndServe(config.Port, nil))
+
+	// Parse all HTML templates before starting the server
+	handlers.ParseTemplates()
+
+	// Route handlers
+	http.HandleFunc("/", handlers.MainHandler)                             // Root route (home page)
+	http.HandleFunc("/artist/{id}", handlers.ArtistHandler)                // Artist detail page
+
+	// Start the server
+	serverPort := config.Port
+	fmt.Println("Starting the server on http://localhost" + serverPort)
+	log.Println(http.ListenAndServe(serverPort, nil))
 }
