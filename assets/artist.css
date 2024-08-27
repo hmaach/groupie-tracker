@@ -9,6 +9,7 @@
     filter: drop-shadow(0 30px 20px rgba(0, 0, 0, 0.2));
     text-align: center;
     color: white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .detail-container h1 {
