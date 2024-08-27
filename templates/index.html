@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/app.css">
     <link rel="shortcut icon" href="/assets/static/favicon.ico" type="image/x-icon">
     <title>Groupie Tracker</title>
@@ -13,7 +12,7 @@
     <span class="title">Groupie Tracker</span>
     <div class="container">
         {{range .Artists}}
-        <div class="card">
+        <a class="card" href="/artist/{{.ID}}">
             <div class="wrapper">
                 <img class="banner-image" src="{{.Image}}" alt="{{.Name}}">
                 <div class="card-info">
@@ -21,10 +20,7 @@
                     <p>{{.Type}}</p>
                 </div>
             </div>
-            <div class="button-wrapper">
-                <a href="/artist/{{.ID}}" class="btn fill">DETAILS</a>
-            </div>
-        </div>
+        </a>
         {{end}}
     </div>
 

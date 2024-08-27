@@ -46,7 +46,14 @@ a {
     justify-content: center;
     text-align: center;
     width: 230px;
-    min-height: 350px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    /* min-height: 350px; */
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .wrapper {
@@ -62,11 +69,6 @@ a {
     width: 200px;
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.255)
-}
-
-.card-info {
-    height: 100px;
-    margin-bottom: 5px;
 }
 
 h1 {
@@ -85,26 +87,13 @@ p {
 
 
 .btn {
+    background: rgba(0, 212, 255, 0.9);
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: bold;
     border: none;
     padding: 12px 24px;
     border-radius: 24px;
-    font-size: 12px;
     font-size: 0.8rem;
     letter-spacing: 2px;
     cursor: pointer;
-}
-
-.fill {
-    background: rgba(0, 212, 255, 0.9);
-    color: rgba(255, 255, 255, 0.95);
-    filter: drop-shadow(0);
-    font-weight: bold;
-    transition: all .3s ease;
-}
-
-.fill:hover {
-    transform: scale(1.125);
-    border-color: rgba(255, 255, 255, 0.9);
-    filter: drop-shadow(0 10px 5px rgba(0, 0, 0, 0.125));
-    transition: all .3s ease;
 }
