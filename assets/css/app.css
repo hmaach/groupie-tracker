@@ -20,7 +20,7 @@ a {
 
 header {
     display: flex;
-    border: red solid 1px;
+    /* border: red solid 1px; */
     margin-bottom: 10px;
 }
 
@@ -34,6 +34,7 @@ header {
     text-align: center;
     margin: 30px auto 30px;
 }
+
 .search-container {
     text-align: center;
     margin: 20px auto;
@@ -50,7 +51,13 @@ header {
     background-color: rgba(255, 255, 255, 0.1);
     color: #fff;
     font-size: 16px;
-    font-family: 'Righteous', sans-serif;
+
+}
+
+.search-bar::placeholder {
+    font-weight: bold;
+    opacity: 0.5;
+    color: #d1d0d0;
 }
 
 .search-bar:focus {
