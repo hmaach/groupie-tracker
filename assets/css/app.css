@@ -1,3 +1,8 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
 body {
     background: rgb(0, 212, 255);
     background: linear-gradient(45deg, rgba(0, 212, 255, 1) 0%, rgba(11, 3, 45, 1) 100%);
@@ -13,6 +18,12 @@ a {
     font-weight: 800;
 }
 
+header {
+    display: flex;
+    border: red solid 1px;
+    margin-bottom: 10px;
+}
+
 .title {
     font-family: 'Righteous', sans-serif;
     font-size: 2rem;
@@ -22,6 +33,30 @@ a {
     width: 100%;
     text-align: center;
     margin: 30px auto 30px;
+}
+.search-container {
+    text-align: center;
+    margin: 20px auto;
+    width: 100%;
+}
+
+.search-bar {
+    width: 60%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 16px;
+    font-family: 'Righteous', sans-serif;
+}
+
+.search-bar:focus {
+    outline: none;
+    border-color: rgba(0, 212, 255, 1);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .container {

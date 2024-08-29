@@ -3,13 +3,19 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/assets/app.css">
+    <link rel="stylesheet" href="/assets/css/app.css">
     <link rel="shortcut icon" href="/assets/static/favicon.ico" type="image/x-icon">
     <title>Groupie Tracker</title>
 </head>
 
 <body>
-    <span class="title">Groupie Tracker</span>
+    <header>
+        <span class="title">Groupie Tracker</span>
+        <div class="search-container">
+            <input type="text" id="search" class="search-bar" placeholder="Search for an artist...">
+            <div id="suggestions" class="suggestions-container"></div>
+        </div>
+    </header>
     <div class="container">
         {{range .Artists}}
         <a class="card" href="/artist/{{.ID}}">
