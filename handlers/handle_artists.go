@@ -21,37 +21,18 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 
 	var artist models.Artist
 
-	// Fetch artist details
-	err := utils.Fetch("/artists/"+id, &artist)
+	artist, err := utils.FetchArtist(id)
 	if err != nil {
-		RenderError(w, http.StatusInternalServerError, "500 | Status Internal Server Error")
-		return
-	}
-	if artist.ID == 0 {
-		RenderError(w, http.StatusNotFound, "404 | Artist Not Found")
-		return
-	}
-
-	// Fetch artist locations
-	if err := utils.Fetch("/locations/"+id, &artist.Location); err != nil {
-		RenderError(w, http.StatusInternalServerError, "500 | Status Internal Server Error")
-		return
-	}
-
-	// Fetch artist relations
-	if err := utils.Fetch("/relation/"+id, &artist.Relation); err != nil {
-		RenderError(w, http.StatusInternalServerError, "500 | Status Internal Server Error")
-		return
-	}
-
-	// Fetch concert dates
-	if err := utils.Fetch("/dates/"+id, &artist.Date); err != nil {
-		RenderError(w, http.StatusInternalServerError, "500 | Status Internal Server Error")
+		if err.Error() == "404" {
+			RenderError(w, http.StatusNotFound, "404 | Artist Not Found")
+		} else {
+			RenderError(w, http.StatusInternalServerError, "500 | Status Internal Server Error")
+		}
 		return
 	}
 
 	// Render the artist details template
-	if err := RenderTemplate(w, "artist.html", 200, artist); err != nil {
+	if err := RenderTemplate(w, "artist.html", http.StatusOK, artist); err != nil {
 		RenderError(w, http.StatusInternalServerError, "500 | Failed to render artist detail page.")
 	}
 }
@@ -71,7 +52,7 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var artists []models.ArtistSummary
+	var artists []models.Artist
 	err := utils.Fetch("/artists", &artists)
 	if err != nil {
 		RenderError(w, http.StatusInternalServerError, "500 | Failed to retrieve artists.")
