@@ -7,8 +7,48 @@ import (
 	"sync"
 
 	"groupie_tracker/config"
+	"groupie_tracker/data"
 	"groupie_tracker/models"
 )
+
+// FetchArtist fetches the artist details, locations, relations, and dates concurrently.
+func FetchAllData() (models.CombinedData, error) {
+	var (
+		wg  sync.WaitGroup
+		mu  sync.Mutex
+		err error
+	)
+
+	// Define a helper function to fetch data concurrently and handle errors.
+	fetchData := func(endpoint string, dest interface{}) {
+		defer wg.Done()
+		if fetchErr := Fetch(endpoint, dest); fetchErr != nil {
+			mu.Lock()
+			err = fmt.Errorf("error fetching data from %s: %v", endpoint, fetchErr)
+			mu.Unlock()
+		}
+	}
+
+	// Fetch related data concurrently
+	wg.Add(4)
+	go fetchData("/artists", &data.Artists)
+	go fetchData("/dates", &data.Dates)
+	go fetchData("/locations", &data.Locations)
+	go fetchData("/relation", &data.Relations)
+	wg.Wait()
+
+	// Check if any errors occurred during concurrent fetching
+	if err != nil {
+		return models.CombinedData{}, err
+	}
+
+	return models.CombinedData{
+		Artists:   data.Artists,
+		Dates:     data.Dates.Index,
+		Locations: data.Locations.Index,
+		Relations: data.Relations.Index,
+	}, nil
+}
 
 // FetchArtist fetches the artist details, locations, relations, and dates concurrently.
 func FetchArtist(id string) (models.Artist, error) {

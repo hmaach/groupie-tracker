@@ -6,8 +6,19 @@ import (
 	"net/http"
 
 	"groupie_tracker/config"
+	"groupie_tracker/data"
 	"groupie_tracker/handlers"
+	"groupie_tracker/utils"
 )
+
+func init() {
+	// Initialize all data before starting the server
+	var err error
+	data.CombinedData, err = utils.FetchAllData()
+	if err != nil {
+		log.Fatalf("Failed to fetch data: %v", err)
+	}
+}
 
 func main() {
 	// Serve static files from the "./assets" directory
