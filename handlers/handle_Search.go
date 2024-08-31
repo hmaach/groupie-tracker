@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -24,10 +25,14 @@ func Search(w http.ResponseWriter, r *http.Request) {
 	var Newdata models.CombinedData
 	for _, l := range data.Artists {
 		if (strings.Contains(Key, l.Name)) || (strings.Contains(l.FirstAlbum, Key)) || (strings.Contains(Key, strconv.Itoa(l.CreationDate))) {
-			Newdata.Artists = append(Newdata.Artists, l)
+			if !Double(l.ID, Newdata) {
+				fmt.Println(l.ID)
+				Newdata.Artists = append(Newdata.Artists, l)
+			}
 		}
 		for _, M := range l.Members {
-			if strings.Contains(M, Key) {
+			if strings.Contains(M, Key) && !Double(l.ID, Newdata) {
+				fmt.Println(l.ID)
 				Newdata.Artists = append(Newdata.Artists, l)
 			}
 		}
@@ -37,19 +42,42 @@ func Search(w http.ResponseWriter, r *http.Request) {
 	for _, j := range data.Locations.Index {
 		for _, J := range j.Locations {
 			if strings.Contains(J, Key) {
-				id = append(id, j.ID)
+				if !exist(id, j.ID, Newdata) {
+					id = append(id, j.ID)
+				}
 			}
 		}
 	}
+	fmt.Println(id)
 	for _, ids := range id {
-		new, err := utils.FetchArtist(strconv.Itoa(ids))
-		if err != nil {
-			RenderError(w, http.StatusInternalServerError, "500 | Failed to render artist detail page.")
+		if !Double(ids, Newdata) {
+			new, err := utils.FetchArtist(strconv.Itoa(ids))
+			if err != nil {
+				RenderError(w, http.StatusInternalServerError, "500 | Failed to render artist detail page.")
+			}
+			Newdata.Artists = append(Newdata.Artists, new)
 		}
-		Newdata.Artists = append(Newdata.Artists, new)
 	}
 	if err := RenderTemplate(w, "index.html", http.StatusOK, Newdata); err != nil {
 		RenderError(w, http.StatusInternalServerError, "500 | Failed to render the page.")
 		return
 	}
+}
+
+func exist(ids []int, nb int, data models.CombinedData) bool {
+	for _, id := range ids {
+		if id == nb || Double(id, data) {
+			return true
+		}
+	}
+	return false
+}
+
+func Double(id int, data models.CombinedData) bool {
+	for _, artist := range data.Artists {
+		if artist.ID == id {
+			return true
+		}
+	}
+	return false
 }
