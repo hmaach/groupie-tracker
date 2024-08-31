@@ -33,11 +33,11 @@ func FetchAllData() (models.CombinedData, error) {
 	}
 
 	// Fetch related data concurrently
-	wg.Add(3)
+	wg.Add(4)
 	go fetchData("/artists", &artists)
 	go fetchData("/dates", &dates)
 	go fetchData("/locations", &locations)
-	// go fetchData("/relations", &relations)
+	go fetchData("/relation", &relations)
 	wg.Wait()
 
 	// Check if any errors occurred during concurrent fetching
