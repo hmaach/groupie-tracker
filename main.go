@@ -21,6 +21,17 @@ func init() {
 }
 
 func main() {
+	// If data is nil, attempt to fetch it again
+	if len(data.CombinedData.Artists) == 0 {
+		fmt.Println("Data was not successfully fetched during init. Retrying...")
+		var err error
+		data.CombinedData, err = utils.FetchAllData()
+		if err != nil {
+			log.Fatalf("Failed to fetch data: %v\n", err)
+		}
+		fmt.Println("Data fetched successfully after retry.")
+	}
+	
 	// Handle requests for assets using the custom handler
 	http.HandleFunc("/assets/", handlers.AssetsHandler)
 
