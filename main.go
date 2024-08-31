@@ -30,7 +30,7 @@ func main() {
 	// Route handlers
 	http.HandleFunc("/", handlers.MainHandler)              // Root route (home page)
 	http.HandleFunc("/artist/{id}", handlers.ArtistHandler) // Artist detail page
-
+	http.HandleFunc("/search", handlers.Search)
 	// Start the server
 	serverPort := config.Port
 	fmt.Println("Starting the server on http://localhost" + serverPort)

@@ -53,20 +53,18 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var artists = data.Artists
+	artists := data.CombinedData
 
 	// Set the Type field based on the number of members
-	for i := range artists {
-		if len(artists[i].Members) == 1 {
-			artists[i].Type = "Artist"
+	for i := range artists.Artists {
+		if len(artists.Artists[i].Members) == 1 {
+			artists.Artists[i].Type = "Artist"
 		} else {
-			artists[i].Type = "Group of " + strconv.Itoa(len(artists[i].Members))
+			artists.Artists[i].Type = "Group of " + strconv.Itoa(len(artists.Artists[i].Members))
 		}
 	}
 
-	data := models.ArtistsPageData{Artists: artists}
-
-	if err := RenderTemplate(w, "index.html", http.StatusOK, data); err != nil {
+	if err := RenderTemplate(w, "index.html", http.StatusOK, artists); err != nil {
 		RenderError(w, http.StatusInternalServerError, "500 | Failed to render the page.")
 		return
 	}
