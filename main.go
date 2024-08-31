@@ -16,21 +16,20 @@ func init() {
 	var err error
 	data.CombinedData, err = utils.FetchAllData()
 	if err != nil {
-		log.Fatalf("Failed to fetch data: %v", err)
+		fmt.Printf("Failed to fetch data: %v", err)
 	}
 }
 
 func main() {
-	// Serve static files from the "./assets" directory
-	fs := http.FileServer(http.Dir("./assets"))
-	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
+	// Handle requests for assets using the custom handler
+	http.HandleFunc("/assets/", handlers.AssetsHandler)
 
 	// Parse all HTML templates before starting the server
 	handlers.ParseTemplates()
 
 	// Route handlers
-	http.HandleFunc("/", handlers.MainHandler)                             // Root route (home page)
-	http.HandleFunc("/artist/{id}", handlers.ArtistHandler)                // Artist detail page
+	http.HandleFunc("/", handlers.MainHandler)              // Root route (home page)
+	http.HandleFunc("/artist/{id}", handlers.ArtistHandler) // Artist detail page
 
 	// Start the server
 	serverPort := config.Port
