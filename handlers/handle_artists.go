@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"groupie_tracker/data"
 	"groupie_tracker/models"
 	"groupie_tracker/utils"
 )
@@ -52,12 +53,7 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var artists []models.Artist
-	err := utils.Fetch("/artists", &artists)
-	if err != nil {
-		RenderError(w, http.StatusInternalServerError, "500 | Failed to retrieve artists.")
-		return
-	}
+	var artists = data.Artists
 
 	// Set the Type field based on the number of members
 	for i := range artists {
