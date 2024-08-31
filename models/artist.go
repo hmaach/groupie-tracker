@@ -13,22 +13,19 @@ type Artist struct {
 	Date         Date
 }
 
-type Location struct {
-	ID        int      `json:"id"`
-	Locations []string `json:"locations"`
-	DatesURL  string   `json:"dates"`
-}
 
-type Relation struct {
-	ID             int                 `json:"id"`
-	DatesLocations map[string][]string `json:"datesLocations"`
-}
 
-type Date struct {
-	ID    int      `json:"id"`
-	Dates []string `json:"dates"`
-}
+
 
 type ArtistsPageData struct {
 	Artists []Artist
 }
+
+// CombinedData structure to hold all fetched data.
+type CombinedData struct {
+    Artists   []Artist   
+    Locations []Location 
+    Dates     []Date     
+    Relations []Relation 
+}
+

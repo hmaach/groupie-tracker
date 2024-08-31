@@ -11,6 +11,49 @@ import (
 )
 
 // FetchArtist fetches the artist details, locations, relations, and dates concurrently.
+func FetchAllData() (models.CombinedData, error) {
+	var (
+		artists   []models.Artist
+		locations models.Locations
+		dates     models.Dates
+		relations models.Relations
+		wg        sync.WaitGroup
+		mu        sync.Mutex
+		err       error
+	)
+
+	// Define a helper function to fetch data concurrently and handle errors.
+	fetchData := func(endpoint string, dest interface{}) {
+		defer wg.Done()
+		if fetchErr := Fetch(endpoint, dest); fetchErr != nil {
+			mu.Lock()
+			err = fmt.Errorf("error fetching data from %s: %v", endpoint, fetchErr)
+			mu.Unlock()
+		}
+	}
+
+	// Fetch related data concurrently
+	wg.Add(3)
+	go fetchData("/artists", &artists)
+	go fetchData("/dates", &dates)
+	go fetchData("/locations", &locations)
+	// go fetchData("/relations", &relations)
+	wg.Wait()
+
+	// Check if any errors occurred during concurrent fetching
+	if err != nil {
+		return models.CombinedData{}, err
+	}
+
+	return models.CombinedData{
+		Artists:   artists,
+		Dates:     dates.Index,
+		Locations: locations.Index,
+		Relations: relations.Index,
+	}, nil
+}
+
+// FetchArtist fetches the artist details, locations, relations, and dates concurrently.
 func FetchArtist(id string) (models.Artist, error) {
 	var (
 		artist models.Artist
