@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -46,7 +45,6 @@ func Search(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
-	fmt.Println(id)
 	for _, ids := range id {
 
 		new, err := utils.FetchArtist(strconv.Itoa(ids))
@@ -79,3 +77,7 @@ func Double(id int, data models.CombinedData) bool {
 	}
 	return false
 }
+
+// encrypt
+// trimspace
+// tolower
