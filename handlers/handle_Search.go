@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -22,15 +23,19 @@ func Search(w http.ResponseWriter, r *http.Request) {
 	}
 	id := []int{}
 	Key := r.FormValue("Search")
+	re := regexp.MustCompile(`\s*\[.*\]$`)
+	Key = re.ReplaceAllString(Key, "")
+	Key = strings.TrimSpace(Key)
+	Key = strings.ToLower(Key)
 	var Newdata models.CombinedData
 	for _, l := range data.Artists {
-		if (strings.Contains(Key, l.Name)) || (strings.Contains(l.FirstAlbum, Key)) || (strings.Contains(Key, strconv.Itoa(l.CreationDate))) {
+		if (strings.Contains(strings.ToLower(l.Name), Key)) || (strings.Contains(strings.ToLower(l.FirstAlbum), Key)) || (strings.Contains(strings.ToLower(strconv.Itoa(l.CreationDate)), Key)) {
 			if !exist(id, l.ID) {
 				id = append(id, l.ID)
 			}
 		}
 		for _, M := range l.Members {
-			if strings.Contains(M, Key) && !exist(id, l.ID) {
+			if strings.Contains(strings.ToLower(M), Key) && !exist(id, l.ID) {
 				id = append(id, l.ID)
 			}
 		}
@@ -54,6 +59,10 @@ func Search(w http.ResponseWriter, r *http.Request) {
 		Newdata.Artists = append(Newdata.Artists, new)
 
 	}
+	if len(Newdata.Artists) == 0 {
+		RenderError(w, 200, "Sorry, we couldn't find that artist. Please try again.")
+		return
+	}
 	if err := RenderTemplate(w, "index.html", http.StatusOK, Newdata); err != nil {
 		RenderError(w, http.StatusInternalServerError, "500 | Failed to render the page.")
 		return
@@ -63,15 +72,6 @@ func Search(w http.ResponseWriter, r *http.Request) {
 func exist(ids []int, nb int) bool {
 	for _, id := range ids {
 		if id == nb {
-			return true
-		}
-	}
-	return false
-}
-
-func Double(id int, data models.CombinedData) bool {
-	for _, artist := range data.Artists {
-		if artist.ID == id {
 			return true
 		}
 	}

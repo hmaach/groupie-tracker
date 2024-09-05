@@ -101,7 +101,7 @@ func FetchArtist(id string) (models.Artist, error) {
 // It takes an API endpoint as a string and a destination to unmarshal the JSON response into.
 // The function returns an error if the request fails or if the API responds with a non-200 status code.
 func Fetch(endpoint string, dest interface{}) error {
-	resp, err := http.Get(config.API_URL + endpoint)
+	resp, err := http.Get(config.ARTISTS_API_URL + endpoint)
 	if err != nil {
 		return err
 	}

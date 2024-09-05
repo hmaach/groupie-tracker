@@ -31,7 +31,7 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-
+	
 	// Render the artist details template
 	if err := RenderTemplate(w, "artist.html", http.StatusOK, artist); err != nil {
 		RenderError(w, http.StatusInternalServerError, "500 | Failed to render artist detail page.")

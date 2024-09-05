@@ -10,22 +10,22 @@
 
 <body>
     <header>
-        <span class="title">Groupie Tracker</span>
+        <a href="/" class="title">Groupie Tracker</a>
         <form action="/search" method="get">
             <div class="search-container">
                 <input list="ice-cream-flavors" type="text" id="Search" name="Search" class="search-bar" placeholder="Search for an artist...">
                 <datalist id="ice-cream-flavors">
                     {{range .Artists}}
-                <option value="{{.Name}}"></option>
-                <option value= "{{.CreationDate}}"></option>
-                <option value="{{.FirstAlbum}}"></option>
+                <option value="{{.Name}} [Name]"></option>
+                <option value= "{{.CreationDate}} [Creation-Date]"></option>
+                <option value="{{.FirstAlbum}} [First-album]"></option>
                 {{range .Members}}
-                <option value= " {{.}}"></option>
+                <option value= " {{.}} [Member]"></option>
                 {{end}}
                 {{end}}
                 {{range .Locations}}
                 {{range .Locations}}
-                <option value="{{.}}"></option>
+                <option value="{{.}} [Location]"></option>
                 {{end}}
                 {{end}}
               </datalist>
