@@ -51,19 +51,29 @@ func Search(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	for _, ids := range id {
-
 		new, err := utils.FetchArtist(strconv.Itoa(ids))
 		if err != nil {
 			RenderError(w, http.StatusInternalServerError, "500 | Failed to render artist detail page.")
 		}
 		Newdata.Artists = append(Newdata.Artists, new)
-
 	}
 	if len(Newdata.Artists) == 0 {
 		RenderError(w, 200, "Sorry, we couldn't find that artist. Please try again.")
 		return
 	}
-	if err := RenderTemplate(w, "index.html", http.StatusOK, Newdata); err != nil {
+	// Define the struct type
+	type Output struct {
+		To_displayed models.CombinedData
+		For_search   models.CombinedData
+	}
+
+	// Create a variable of type Output and initialize it
+	affiche := Output{
+		To_displayed: Newdata,           // Ensure Newdata is of type models.CombinedData
+		For_search:   data.CombinedData, // Ensure data.CombinedData is of type models.CombinedData
+	}
+
+	if err := RenderTemplate(w, "index.html", http.StatusOK, affiche); err != nil {
 		RenderError(w, http.StatusInternalServerError, "500 | Failed to render the page.")
 		return
 	}
@@ -77,7 +87,3 @@ func exist(ids []int, nb int) bool {
 	}
 	return false
 }
-
-// encrypt
-// trimspace
-// tolower

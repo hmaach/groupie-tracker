@@ -15,7 +15,7 @@
             <div class="search-container">
                 <input list="ice-cream-flavors" type="text" id="Search" name="Search" class="search-bar" placeholder="Search for an artist...">
                 <datalist id="ice-cream-flavors">
-                    {{range .Artists}}
+                    {{range .For_search.Artists}}
                 <option value="{{.Name}} [Name]"></option>
                 <option value= "{{.CreationDate}} [Creation-Date]"></option>
                 <option value="{{.FirstAlbum}} [First-album]"></option>
@@ -23,7 +23,7 @@
                 <option value= " {{.}} [Member]"></option>
                 {{end}}
                 {{end}}
-                {{range .Locations}}
+                {{range .For_search.Locations}}
                 {{range .Locations}}
                 <option value="{{.}} [Location]"></option>
                 {{end}}
@@ -34,7 +34,7 @@
       </form>
     </header>
     <div class="container">
-        {{range .Artists}}
+        {{range .To_displayed.Artists}}
         <a class="card" href="/artist/{{.ID}}">
             <div class="wrapper">
                 <img class="banner-image" src="{{.Image}}" alt="{{.Name}}">
