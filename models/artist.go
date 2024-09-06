@@ -13,10 +13,6 @@ type Artist struct {
 	Date         Date
 }
 
-
-
-
-
 type ArtistsPageData struct {
 	Artists []Artist
 }
