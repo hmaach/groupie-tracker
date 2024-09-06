@@ -1,5 +1,5 @@
 .error-card {
-    backdrop-filter: blur(16px) saturate(180%);
+    backdrop-filter: blur(16px);
     background-color: rgba(17, 25, 40, 0.25);
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.125);
@@ -9,7 +9,6 @@
     justify-content: center;
     text-align: center;
     width: 230px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     padding: 40px 20px;
     margin:250px auto 0;
     width: 50%;

@@ -3,9 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/css/app.css">
     <link rel="stylesheet" href="/assets/css/artist.css">
     <link rel="shortcut icon" href="/assets/static/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
     <title>{{.Name}} - Artist Details</title>
 </head>
 
@@ -15,7 +19,6 @@
         <img src="{{.Image}}" alt="{{.Name}}">
 
         <div class="detail-section">
-
             <div class="detail-line">
                 <span class="details-title">Creation Date:</span>
                 <span class="ship">{{.CreationDate}}</span>
@@ -38,8 +41,8 @@
             <h2>Concerts</h2>
             {{range $key, $value := .Relation.DatesLocations}}
             <div class="concert-section">
-                <span class="details-title-2">{{$key}} :</span>
-                <div class="ship-container">
+                <span class="details-title-2 ">{{$key}} :</span>
+                <div class="ship-container location-dates-grid">
                     {{range $value}}<span class="ship">{{.}}</span>{{end}}
                 </div>
             </div>
@@ -48,19 +51,69 @@
 
         <div class="detail-section">
             <h2>Locations</h2>
-            <div class="ship-container">
-                {{range .Location.Locations}}<span class="ship">{{.}}</span>{{end}}
+            <div class="ship-grid">
+                {{range .Location.Locations}}
+                <span class="ship-link ship">{{.}}</span>
+                {{end}}
             </div>
+            <!-- Map container -->
+            <div id="map"></div>
         </div>
 
         <div class="detail-section">
             <h2>Concert Dates</h2>
-            <div class="date-grid">
+            <div class="ship-grid">
                 {{range .Date.Dates}}<span class="ship">{{.}}</span>{{end}}
             </div>
         </div>
         <a href="/" class="btn">Back to Home</a>
     </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+        // Function to initialize the map
+        function initializeMap(locations) {
+            // Check if locations are available
+            if (locations.length === 0) {
+                console.error("No locations provided for map.");
+                return;
+            }
+
+            // Initialize the map centered on the first location
+            var map = L.map('map').setView([locations[0].lat, locations[0].lng], 5);
+
+            // Set up the OSM layer
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // Add markers to the map
+            locations.forEach(function (location) {
+                L.marker([location.lat, location.lng]).addTo(map);
+            });
+
+            // Adjust the map to fit all markers
+            var bounds = new L.LatLngBounds(locations.map(function (location) {
+                return [location.lat, location.lng];
+            }));
+            map.fitBounds(bounds);
+        }
+
+        // Fetch geocoded locations from the server
+        fetch('http://localhost:8080/locations/{{.ID}}')
+            .then(response => response.json())
+            .then(data => {
+                var locations = data.Coordinates.map(function (coord) {
+                    return {
+                        lat: coord.Lat,
+                        lng: coord.Lng,
+                        name: coord.LocationName
+                    };
+                });
+                initializeMap(locations);
+            })
+            .catch(error => console.error('Error fetching geocoded locations:', error));
+    </script>
 </body>
 
 </html>

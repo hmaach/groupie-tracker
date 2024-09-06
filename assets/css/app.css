@@ -14,13 +14,11 @@ body {
 
 a {
     text-decoration: none;
-    font-family: sans-serif;
     font-weight: 800;
 }
 
 header {
     display: flex;
-    /* border: red solid 1px; */
     margin-bottom: 10px;
 }
 
@@ -35,39 +33,7 @@ header {
     margin: 30px auto 30px;
 }
 
-.search-container {
-    text-align: center;
-    margin: 20px auto;
-    width: 100%;
-}
-
-.search-bar {
-    width: 60%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    box-sizing: border-box;
-    border-radius: 24px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    font-size: 16px;
-
-}
-
-.search-bar::placeholder {
-    font-weight: bold;
-    opacity: 0.5;
-    color: #d1d0d0;
-}
-
-.search-bar:focus {
-    outline: none;
-    border-color: rgba(0, 212, 255, 1);
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
 .container {
-
     display: flex;
     align-items: center;
     justify-content: center;
@@ -76,12 +42,11 @@ header {
 }
 
 .card {
-    backdrop-filter: blur(16px) saturate(180%);
+    backdrop-filter: blur(16px);
     background-color: rgba(17, 25, 40, 0.25);
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.125);
     padding: 20px 10px;
-    filter: drop-shadow(0 30px 10px rgba(0, 0, 0, 0.125));
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -90,7 +55,6 @@ header {
     width: 230px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
-    /* min-height: 350px; */
 }
 
 .card:hover {
@@ -138,4 +102,35 @@ p {
     font-size: 0.8rem;
     letter-spacing: 2px;
     cursor: pointer;
+}
+
+.search-container {
+    text-align: center;
+    margin: 20px auto;
+    width: 100%;
+}
+
+.search-bar {
+    width: 60%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 16px;
+
+}
+
+.search-bar::placeholder {
+    font-weight: bold;
+    opacity: 0.5;
+    color: #d1d0d0;
+}
+
+.search-bar:focus {
+    outline: none;
+    border-color: rgba(0, 212, 255, 1);
+    background-color: rgba(255, 255, 255, 0.2);
 }
