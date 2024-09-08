@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"net/http"
-	"regexp"
 	"strconv"
 	"strings"
 
@@ -23,13 +22,11 @@ func Search(w http.ResponseWriter, r *http.Request) {
 	}
 	id := []int{}
 	Key := r.FormValue("Search")
-	re := regexp.MustCompile(`\s*\[.*\]$`)
-	Key = re.ReplaceAllString(Key, "")
 	Key = strings.TrimSpace(Key)
 	Key = strings.ToLower(Key)
 	var Newdata models.CombinedData
 	for _, l := range data.Artists {
-		if (strings.Contains(strings.ToLower(l.Name), Key)) || (strings.Contains(strings.ToLower(l.FirstAlbum), Key)) || (strings.Contains(strings.ToLower(strconv.Itoa(l.CreationDate)), Key)) {
+		if (strings.Contains(strings.ToLower(l.Name), Key)) || strings.ToLower(l.FirstAlbum) == Key || strconv.Itoa(l.CreationDate) == Key {
 			if !exist(id, l.ID) {
 				id = append(id, l.ID)
 			}
@@ -49,6 +46,15 @@ func Search(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		}
+		for _, j := range data.Dates.Index {
+			for _, i := range j.Dates {
+				if strings.ToLower(i) == Key {
+					if !exist(id, j.ID) {
+						id = append(id, j.ID)
+					}
+				}
+			}
+		}
 	}
 	for _, ids := range id {
 		new, err := utils.FetchArtist(strconv.Itoa(ids))
@@ -57,11 +63,7 @@ func Search(w http.ResponseWriter, r *http.Request) {
 		}
 		Newdata.Artists = append(Newdata.Artists, new)
 	}
-	if len(Newdata.Artists) == 0 {
-		RenderError(w, 200, "Sorry, we couldn't find that artist. Please try again.")
-		return
-	}
-	// Define the struct type
+
 	type Output struct {
 		To_displayed models.CombinedData
 		For_search   models.CombinedData

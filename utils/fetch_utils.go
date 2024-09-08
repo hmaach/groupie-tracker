@@ -56,7 +56,7 @@ func FetchAllData() (models.CombinedData, error) {
 func FetchArtist(id string) (models.Artist, error) {
 	newid, err := strconv.Atoi(id)
 	if err != nil {
-		return models.Artist{}, errors.New("404 | The page you are looking for does not exist")
+		return models.Artist{}, errors.New("404")
 	}
 	var artist models.Artist
 	for _, v := range data.Artists {
@@ -70,6 +70,11 @@ func FetchArtist(id string) (models.Artist, error) {
 			artist.Type = v.Type
 		}
 	}
+
+	if artist.ID == 0 {
+		return models.Artist{}, errors.New("404")
+	}
+
 	var loca models.Location
 	for _, loc := range data.Locations.Index {
 		if loc.ID == newid {
@@ -91,9 +96,7 @@ func FetchArtist(id string) (models.Artist, error) {
 	artist.Location = loca
 	artist.Date = date
 	artist.Relation = rel
-	if artist.ID == 0 {
-		return models.Artist{}, errors.New("404 | The page you are looking for does not exist")
-	}
+
 	return artist, nil
 }
 

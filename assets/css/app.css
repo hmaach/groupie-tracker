@@ -19,7 +19,8 @@ a {
 
 header {
     display: flex;
-    margin-bottom: 10px;
+    margin: 0 30px 10px;
+    justify-content: space-between;
 }
 
 .title {
@@ -67,14 +68,9 @@ header {
 
 .container {
     display: flex;
-}
-
-.cards-container {
-    display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    margin-right: 345px;
     gap: 10px;
 }
 
@@ -141,23 +137,37 @@ p {
     cursor: pointer;
 }
 
+.search-btn {
+    border-radius: 0 24px 24px 0;
+}
+
 .search-container {
     text-align: center;
     margin: 20px auto;
     width: 100%;
 }
 
+.search {
+    display: flex;
+    margin: 8px 0 0 0;
+}
+
+.no-data {
+    margin: 20px auto;
+    text-align: center;
+    font-size: 1.3rem;
+    color: #fff;
+}
+
 .search-bar {
-    width: 60%;
+    min-width: 300px;
     padding: 12px 20px;
-    margin: 8px 0;
     box-sizing: border-box;
-    border-radius: 24px;
+    border-radius: 24px 0 0 24px;
     border: 1px solid rgba(255, 255, 255, 0.5);
     background-color: rgba(255, 255, 255, 0.1);
     color: #fff;
     font-size: 16px;
-
 }
 
 .search-bar::placeholder {
@@ -170,6 +180,8 @@ p {
     outline: none;
     border-color: rgba(0, 212, 255, 1);
     background-color: rgba(255, 255, 255, 0.2);
+}
+
 .filter-container {
     backdrop-filter: blur(16px) saturate(180%);
     background-color: rgba(17, 25, 40, 0.25);
@@ -241,4 +253,45 @@ input[type="range"] {
 .filter-input[type="range"] {
     width: 200px;
     margin: 0;
+}
+
+@media (max-width: 840px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .search-bar {
+        margin: 0;
+    }
+
+    .title {
+        margin-bottom: 5px;
+    }
+
+}
+
+@media (max-width: 430px) {
+
+    .search-container {
+        text-align: center;
+        margin: 10px auto;
+        width: 100%;
+    }
+
+    .search {
+        display: flex;
+        margin: 8px 0 0 0;
+    }
+
+    .search-bar {
+        min-width: 200px;
+        padding: 5px 8px;
+        box-sizing: border-box;
+        border-radius: 24px 0 0 24px;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        font-size: 14px;
+    }
 }
