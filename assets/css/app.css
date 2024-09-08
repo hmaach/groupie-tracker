@@ -21,6 +21,12 @@ header {
     display: flex;
     margin: 0 30px 10px;
     justify-content: space-between;
+    margin-right: 335px;
+}
+
+.title-container {
+    border: red solid 1px;
+    width: 320px;
 }
 
 .title {
@@ -39,6 +45,7 @@ header {
     margin: 20px auto;
     margin-right: 340px;
     width: 100%;
+    border: rgb(9, 255, 0) solid 1px;
 }
 
 .search-bar {
@@ -68,10 +75,15 @@ header {
 
 .container {
     display: flex;
+}
+
+.cards {
+    display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
     gap: 10px;
+    margin-right: 320px;
 }
 
 .card {
@@ -86,6 +98,7 @@ header {
     justify-content: center;
     text-align: center;
     width: 230px;
+    min-height: 280px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
 }
@@ -155,6 +168,7 @@ p {
 .no-data {
     margin: 20px auto;
     text-align: center;
+    min-height: 280px;
     font-size: 1.3rem;
     color: #fff;
 }
@@ -183,77 +197,80 @@ p {
 }
 
 .filter-container {
-    backdrop-filter: blur(16px) saturate(180%);
-    background-color: rgba(17, 25, 40, 0.25);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.125);
-    filter: drop-shadow(0 30px 10px rgba(0, 0, 0, 0.125));
+    border: rgb(55, 0, 255) solid 1px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
     padding: 20px;
-    color: white;
-    max-width: 300px;
-    margin: 15px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
     position: fixed;
     right: 0;
     top: 0;
-    max-height: 90%;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-right: 30px;
+    padding: 40px 20px;
+    min-height: 300px;
+    margin-top: 20px;
+}
+
+.num-members {
+    display: flex;
+}
+
+input[type=checkbox] {
+    margin-right: 5px;
 }
 
 .filter-section {
-    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .filter-section label {
-    display: block;
+    color: #fff;
+    font-size: 1rem;
     margin-bottom: 8px;
-    font-weight: bold;
 }
 
-input[type="range"] {
-    width: 100%;
-    margin-top: 5px;
-}
-
-.checkbox-container {
-    display: flex;
-    flex-direction: column;
-}
-
-.checkbox-container label {
-    margin-left: 5px;
-}
-
-.apply-filters-btn {
-    background-color: #ff6347;
-    color: white;
+.filter-section input {
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 4px;
     border: none;
-    padding: 10px;
-    width: 100%;
-    cursor: pointer;
-    border-radius: 5px;
-    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
 }
 
-.apply-filters-btn:hover {
-    background-color: #ff4500;
+.filter-section input::placeholder {
+    color: #d1d0d0;
+    opacity: 0.5;
 }
 
-.filter-datalist {
+.filter-section input:focus {
+    outline: none;
+    border-color: rgba(0, 212, 255, 1);
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.members-checkboxes {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    writing-mode: vertical-lr;
-    width: 200px;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
-.filter-option {
-    padding: 0;
+
+.btn:hover {
+    background: rgba(0, 180, 220, 1);
 }
 
-.filter-input[type="range"] {
-    width: 200px;
-    margin: 0;
-}
+
+
 
 @media (max-width: 840px) {
     header {
@@ -269,6 +286,19 @@ input[type="range"] {
         margin-bottom: 5px;
     }
 
+}
+
+/* Responsive Styling */
+@media (max-width: 600px) {
+    .filter-group {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .filter-container input[type="number"],
+    .filter-container input[type="text"] {
+        max-width: 100%;
+    }
 }
 
 @media (max-width: 430px) {

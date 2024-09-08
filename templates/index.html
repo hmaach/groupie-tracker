@@ -1,118 +1,119 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="/assets/css/app.css">
-    <link rel="shortcut icon" href="/assets/static/favicon.ico" type="image/x-icon">
-    <title>Groupie Tracker</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/assets/css/app.css">
+        <link rel="shortcut icon" href="/assets/static/favicon.ico"
+            type="image/x-icon">
+        <title>Groupie Tracker</title>
+    </head>
 
-<body>
-    <header>
-        <a href="/" class="title">Groupie Tracker</a>
-        <form action="/search" method="get">
-            <div class="search-container">
-                <input list="ice-cream-flavors" type="text" id="Search" name="Search" class="search-bar" placeholder="Search for an artist...">
-                <datalist id="ice-cream-flavors">
-                    {{range .For_search.Artists}}
-                <option value="{{.Name}} [Name]"></option>
-                <option value= "{{.CreationDate}} [Creation-Date]"></option>
-                <option value="{{.FirstAlbum}} [First-album]"></option>
-                {{range .Members}}
-                <option value= " {{.}} [Member]"></option>
-                {{end}}
-                {{end}}
-                {{range .For_search.Locations}}
-                {{range .Locations}}
-                <option value="{{.}} [Location]"></option>
-                {{end}}
-                {{end}}
-              </datalist>
-            <div id="suggestions" class="suggestions-container"></div>
-        </div>
-      </form>
-    </header>
-    <div class="container">
-
-        {{range .To_displayed.Artists}}
-        <a class="card" href="/artist/{{.ID}}">
-            <div class="wrapper">
-                <img class="banner-image" src="{{.Image}}" alt="{{.Name}}">
-                <div class="card-info">
-                    <h1>{{.Name}}</h1>
-                    <p>{{.Type}}</p>
-        <div class="filter-container">
-            <h2>Filter Artists/Bands</h2>
-            <!-- Creation Date Range Filter -->
-            <div class="filter-section">
-                <label for="creation-date">Creation Date:</label>
-                <datalist class="filter-datalist" id="values">
-                    <option class="filter-option" value="0" label="very cold!"></option>
-                    <option class="filter-option" value="25" label="cool"></option>
-                    <option class="filter-option" value="50" label="medium"></option>
-                    <option class="filter-option" value="75" label="getting warm!"></option>
-                    <option class="filter-option" value="100" label="hot!"></option>
-                </datalist>
-                <datalist class="filter-datalist" id="values">
-                    <option class="filter-option" value="0" label="very cold!"></option>
-                    <option class="filter-option" value="25" label="cool"></option>
-                    <option class="filter-option" value="50" label="medium"></option>
-                    <option class="filter-option" value="75" label="getting warm!"></option>
-                    <option class="filter-option" value="100" label="hot!"></option>
-                </datalist>
+    <body>
+        <header>
+            <div class="title-container">
+                <a href="/" class="title">Groupie Tracker</a>
             </div>
 
-            <!-- First Album Date Range Filter -->
-            <div class="filter-section">
-                <label for="first-album">First Album Date:</label>
-                <input type="range" id="first-album-min" name="first-album-min" min="1960" max="2024">
-                <span id="first-album-min-label">1960</span> -
-                <input type="range" id="first-album-max" name="first-album-max" min="1960" max="2024">
-                <span id="first-album-max-label">2024</span>
-            </div>
-
-            <!-- Number of Members Range Filter -->
-            <div class="filter-section">
-                <label for="members">Number of Members:</label>
-                <input type="range" id="members-min" name="members-min" min="1" max="10">
-                <span id="members-min-label">1</span> -
-                <input type="range" id="members-max" name="members-max" min="1" max="10">
-                <span id="members-max-label">10</span>
-            </div>
-
-            <!-- Locations Checkbox Filter -->
-            <div class="filter-section">
-                <label for="locations">Concert Locations:</label>
-                <div id="locations" class="checkbox-container">
-                    <input type="checkbox" id="seattle" name="locations" value="Seattle">
-                    <label for="seattle">Seattle</label>
-                    <input type="checkbox" id="new-york" name="locations" value="New York">
-                    <label for="new-york">New York</label>
-                    <input type="checkbox" id="la" name="locations" value="Los Angeles">
-                    <label for="la">Los Angeles</label>
-                    <!-- Add more locations as needed -->
+            <form action="/search" method="get">
+                <div class="search-container">
+                    <div class="search">
+                        <input list="ice-cream-flavors" type="text" id="search"
+                            name="Search" class="search-bar"
+                            placeholder="Search for an artist...">
+                        <button type="submit"
+                            class="btn search-btn">Search</button>
+                    </div>
+                    <datalist id="ice-cream-flavors">
+                        {{range .For_search.Artists}}
+                        <option value="{{.Name}}">Name</option>
+                        <option value="{{.CreationDate}}">Creation-Date</option>
+                        <option value="{{.FirstAlbum}}">First-album</option>
+                        {{range .Members}}
+                        <option value=" {{.}}">Member</option>
+                        {{end}}
+                        {{end}}
+                        {{range .For_search.Locations}}
+                        {{range .Locations}}
+                        <option value="{{.}}">Location</option>
+                        {{end}}
+                        {{end}}
+                    </datalist>
+                    <div id="suggestions" class="suggestions-container"></div>
                 </div>
+            </form>
+        </header>
+        <div class="container">
+            <div class="cards">
+                {{if gt (len .To_displayed.Artists) 0}}
+                {{range .To_displayed.Artists}}
+                {{if ne .ID 0}}
+                <a class="card" href="/artist/{{.ID}}">
+                    <div class="wrapper">
+                        <img class="banner-image" src="{{.Image}}"
+                            alt="{{.Name}}">
+                        <div class="card-info">
+                            <h1>{{.Name}}</h1>
+                            <p>{{.Type}}</p>
+                        </div>
+                    </div>
+                </a>
+                {{end}}
+                {{end}}
+                {{else}}
+                <div class="no-data">
+                    <p>There's no Artist/Band to display !</p>
+                </div>
+                {{end}}
             </div>
-
-            <button class="apply-filters-btn">Apply Filters</button>
-        </div>
-
-        <div class="cards-container">
-            {{range .Artists}}
-            <a class="card" href="/artist/{{.ID}}">
-                <div class="wrapper">
-                    <img class="banner-image" src="{{.Image}}" alt="{{.Name}}">
-                    <div class="card-info">
-                        <h1>{{.Name}}</h1>
-                        <p>{{.Type}}</p>
+            <form action="/filter" method="get" class="filter-container">
+                <div class="filter-group">
+                    <div class="creation-date">
+                        <label for="creation-date-min">Creation Date:</label>
+                        <input type="number" id="creation-date-min"
+                            name="creation-date-min" placeholder="Min"
+                            min="1950" max="2024">
+                        <input type="number" id="creation-date-max"
+                            name="creation-date-max" placeholder="Max"
+                            min="1950" max="2024">
+                    </div>
+                    <div class="first-album">
+                        <label for="first-album-min">First Album:</label>
+                        <input type="number" id="first-album-min"
+                            name="first-album-min" placeholder="Min" min="1950"
+                            max="2024">
+                        <input type="number" id="first-album-max"
+                            name="first-album-max" placeholder="Max" min="1950"
+                            max="2024">
+                    </div>
+                    <div class="location">
+                        <label for="location">Location:</label>
+                        <input list="locations-list" type="text" id="location"
+                            name="location" placeholder="Filter by location...">
+                    </div>
+                    <div class="members">
+                        <label for="num-members">Nº Members:</label>
+                        <div class="checkbox-group" id="num-members">
+                            <label><input type="checkbox" name="members"
+                                    value="1"> 1</label>
+                            <label><input type="checkbox" name="members"
+                                    value="2"> 2</label>
+                            <label><input type="checkbox" name="members"
+                                    value="3"> 3</label>
+                            <label><input type="checkbox" name="members"
+                                    value="4"> 4</label>
+                            <label><input type="checkbox" name="members"
+                                    value="5"> 5</label>
+                            <label><input type="checkbox" name="members"
+                                    value="6"> +6</label>
+                        </div>
                     </div>
                 </div>
-            </a>
-            {{end}}
+                <button type="submit" class="btn filter-btn">Apply
+                    Filter</button>
+            </form>
         </div>
-    </div>
-
-</body>
+    </body>
 
 </html>
