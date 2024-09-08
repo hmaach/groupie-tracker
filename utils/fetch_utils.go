@@ -2,8 +2,10 @@ package utils
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
+	"strconv"
 	"sync"
 
 	"groupie_tracker/config"
@@ -52,45 +54,46 @@ func FetchAllData() (models.CombinedData, error) {
 
 // FetchArtist fetches the artist details, locations, relations, and dates concurrently.
 func FetchArtist(id string) (models.Artist, error) {
-	var (
-		artist models.Artist
-		wg     sync.WaitGroup
-		mu     sync.Mutex
-		err    error
-	)
-
-	// Fetch artist details first
-	if err := Fetch("/artists/"+id, &artist); err != nil {
-		return models.Artist{}, err
+	newid, err := strconv.Atoi(id)
+	if err != nil {
+		return models.Artist{}, errors.New("404 | The page you are looking for does not exist")
 	}
-
-	// Handle case where artist is not found
-	if artist.ID == 0 {
-		return models.Artist{}, fmt.Errorf("404")
-	}
-
-	// Define a helper function to fetch data concurrently and handle errors.
-	fetchData := func(endpoint string, dest interface{}) {
-		defer wg.Done()
-		if fetchErr := Fetch(endpoint, dest); fetchErr != nil {
-			mu.Lock()
-			err = fetchErr
-			mu.Unlock()
+	var artist models.Artist
+	for _, v := range data.Artists {
+		if v.ID == newid {
+			artist.ID = v.ID
+			artist.CreationDate = v.CreationDate
+			artist.FirstAlbum = v.FirstAlbum
+			artist.Image = v.Image
+			artist.Members = v.Members
+			artist.Name = v.Name
+			artist.Type = v.Type
 		}
 	}
-
-	// Fetch related data concurrently
-	wg.Add(3)
-	go fetchData("/locations/"+id, &artist.Location)
-	go fetchData("/relation/"+id, &artist.Relation)
-	go fetchData("/dates/"+id, &artist.Date)
-	wg.Wait()
-
-	// Check if any errors occurred during concurrent fetching
-	if err != nil {
-		return models.Artist{}, err
+	var loca models.Location
+	for _, loc := range data.Locations.Index {
+		if loc.ID == newid {
+			loca.Locations = loc.Locations
+		}
 	}
-
+	var date models.Date
+	for _, dat := range data.Dates.Index {
+		if dat.ID == newid {
+			date.Dates = dat.Dates
+		}
+	}
+	var rel models.Relation
+	for _, rela := range data.Relations.Index {
+		if rela.ID == newid {
+			rel.DatesLocations = rela.DatesLocations
+		}
+	}
+	artist.Location = loca
+	artist.Date = date
+	artist.Relation = rel
+	if artist.ID == 0 {
+		return models.Artist{}, errors.New("404 | The page you are looking for does not exist")
+	}
 	return artist, nil
 }
 
@@ -98,7 +101,7 @@ func FetchArtist(id string) (models.Artist, error) {
 // It takes an API endpoint as a string and a destination to unmarshal the JSON response into.
 // The function returns an error if the request fails or if the API responds with a non-200 status code.
 func Fetch(endpoint string, dest interface{}) error {
-	resp, err := http.Get(config.API_URL + endpoint)
+	resp, err := http.Get(config.ARTISTS_API_URL + endpoint)
 	if err != nil {
 		return err
 	}

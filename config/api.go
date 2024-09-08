@@ -1,3 +1,7 @@
 package config
 
-const API_URL = "https://groupietrackers.herokuapp.com/api"
+const (
+	ARTISTS_API_URL = "https://groupietrackers.herokuapp.com/api"
+
+	MAP_API_URL = "https://nominatim.openstreetmap.org/search.php"
+)

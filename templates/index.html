@@ -10,19 +10,40 @@
 
 <body>
     <header>
-        <span class="title">Groupie Tracker</span>
-        <div class="search-container">
-            <input type="text" id="search" class="search-bar" placeholder="Search for an artist...">
+        <a href="/" class="title">Groupie Tracker</a>
+        <form action="/search" method="get">
+            <div class="search-container">
+                <input list="ice-cream-flavors" type="text" id="Search" name="Search" class="search-bar" placeholder="Search for an artist...">
+                <datalist id="ice-cream-flavors">
+                    {{range .For_search.Artists}}
+                <option value="{{.Name}} [Name]"></option>
+                <option value= "{{.CreationDate}} [Creation-Date]"></option>
+                <option value="{{.FirstAlbum}} [First-album]"></option>
+                {{range .Members}}
+                <option value= " {{.}} [Member]"></option>
+                {{end}}
+                {{end}}
+                {{range .For_search.Locations}}
+                {{range .Locations}}
+                <option value="{{.}} [Location]"></option>
+                {{end}}
+                {{end}}
+              </datalist>
             <div id="suggestions" class="suggestions-container"></div>
         </div>
+      </form>
     </header>
     <div class="container">
 
+        {{range .To_displayed.Artists}}
+        <a class="card" href="/artist/{{.ID}}">
+            <div class="wrapper">
+                <img class="banner-image" src="{{.Image}}" alt="{{.Name}}">
+                <div class="card-info">
+                    <h1>{{.Name}}</h1>
+                    <p>{{.Type}}</p>
         <div class="filter-container">
             <h2>Filter Artists/Bands</h2>
-
-
-
             <!-- Creation Date Range Filter -->
             <div class="filter-section">
                 <label for="creation-date">Creation Date:</label>

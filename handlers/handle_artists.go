@@ -53,20 +53,25 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var artists = data.Artists
+	type Output struct {
+		To_displayed models.CombinedData
+		For_search   models.CombinedData
+	}
+	affiche := Output{
+		To_displayed: data.CombinedData,
+		For_search:   data.CombinedData,
+	}
 
 	// Set the Type field based on the number of members
-	for i := range artists {
-		if len(artists[i].Members) == 1 {
-			artists[i].Type = "Artist"
+	for i := range data.Artists {
+		if len(data.Artists[i].Members) == 1 {
+			data.Artists[i].Type = "Artist"
 		} else {
-			artists[i].Type = "Group of " + strconv.Itoa(len(artists[i].Members))
+			data.Artists[i].Type = "Group of " + strconv.Itoa(len(data.Artists[i].Members))
 		}
 	}
 
-	data := models.ArtistsPageData{Artists: artists}
-
-	if err := RenderTemplate(w, "index.html", http.StatusOK, data); err != nil {
+	if err := RenderTemplate(w, "index.html", http.StatusOK, affiche); err != nil {
 		RenderError(w, http.StatusInternalServerError, "500 | Failed to render the page.")
 		return
 	}
