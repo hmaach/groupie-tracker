@@ -45,6 +45,62 @@
             </form>
         </header>
         <div class="container">
+            <form action="/filter" method="get" class="filter-container">
+                <div class="filter-group">
+                    <div class="creation-date">
+                        <label class="filter-label"
+                            for="creation-date-min">Creation Date</label>
+                        <div class="filter-dates">
+                            <input type="number" id="creation-date-min"
+                                name="creation-date-min" placeholder="Min"
+                                min="1950" max="2024">
+                            <input type="number" id="creation-date-max"
+                                name="creation-date-max" placeholder="Max"
+                                min="1950" max="2024">
+                        </div>
+                    </div>
+                    <div class="first-album">
+                        <label class="filter-label" for="first-album-min">First
+                            Album</label>
+                        <div class="filter-dates">
+                            <input type="number" id="first-album-min"
+                                name="first-album-min" placeholder="Min"
+                                min="1950"
+                                max="2024">
+                            <input type="number" id="first-album-max"
+                                name="first-album-max" placeholder="Max"
+                                min="1950"
+                                max="2024">
+                        </div>
+                    </div>
+                    <div class="location">
+                        <label class="filter-label"
+                            for="location">Location</label>
+                        <input list="locations-list" type="text" id="location"
+                            name="location" placeholder="Filter by location...">
+                    </div>
+                    <div class="members">
+                        <label class="filter-label" for="num-members">Nº
+                            Members</label>
+                        <div class="checkbox-group" id="num-members">
+                            <label><input type="checkbox" name="members"
+                                    value="1"> 1</label>
+                            <label><input type="checkbox" name="members"
+                                    value="2"> 2</label>
+                            <label><input type="checkbox" name="members"
+                                    value="3"> 3</label>
+                            <label><input type="checkbox" name="members"
+                                    value="4"> 4</label>
+                            <label><input type="checkbox" name="members"
+                                    value="5"> 5</label>
+                            <label><input type="checkbox" name="members"
+                                    value="6"> +6</label>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn filter-btn">Apply
+                    Filter</button>
+            </form>
             <div class="cards">
                 {{if gt (len .To_displayed.Artists) 0}}
                 {{range .To_displayed.Artists}}
@@ -67,52 +123,7 @@
                 </div>
                 {{end}}
             </div>
-            <form action="/filter" method="get" class="filter-container">
-                <div class="filter-group">
-                    <div class="creation-date">
-                        <label for="creation-date-min">Creation Date:</label>
-                        <input type="number" id="creation-date-min"
-                            name="creation-date-min" placeholder="Min"
-                            min="1950" max="2024">
-                        <input type="number" id="creation-date-max"
-                            name="creation-date-max" placeholder="Max"
-                            min="1950" max="2024">
-                    </div>
-                    <div class="first-album">
-                        <label for="first-album-min">First Album:</label>
-                        <input type="number" id="first-album-min"
-                            name="first-album-min" placeholder="Min" min="1950"
-                            max="2024">
-                        <input type="number" id="first-album-max"
-                            name="first-album-max" placeholder="Max" min="1950"
-                            max="2024">
-                    </div>
-                    <div class="location">
-                        <label for="location">Location:</label>
-                        <input list="locations-list" type="text" id="location"
-                            name="location" placeholder="Filter by location...">
-                    </div>
-                    <div class="members">
-                        <label for="num-members">Nº Members:</label>
-                        <div class="checkbox-group" id="num-members">
-                            <label><input type="checkbox" name="members"
-                                    value="1"> 1</label>
-                            <label><input type="checkbox" name="members"
-                                    value="2"> 2</label>
-                            <label><input type="checkbox" name="members"
-                                    value="3"> 3</label>
-                            <label><input type="checkbox" name="members"
-                                    value="4"> 4</label>
-                            <label><input type="checkbox" name="members"
-                                    value="5"> 5</label>
-                            <label><input type="checkbox" name="members"
-                                    value="6"> +6</label>
-                        </div>
-                    </div>
-                </div>
-                <button type="submit" class="btn filter-btn">Apply
-                    Filter</button>
-            </form>
+
         </div>
     </body>
 

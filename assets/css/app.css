@@ -25,7 +25,6 @@ header {
 }
 
 .title-container {
-    border: red solid 1px;
     width: 320px;
 }
 
@@ -45,7 +44,6 @@ header {
     margin: 20px auto;
     margin-right: 340px;
     width: 100%;
-    border: rgb(9, 255, 0) solid 1px;
 }
 
 .search-bar {
@@ -152,6 +150,7 @@ p {
 
 .search-btn {
     border-radius: 0 24px 24px 0;
+    margin: 8px 0;
 }
 
 .search-container {
@@ -197,15 +196,16 @@ p {
 }
 
 .filter-container {
-    border: rgb(55, 0, 255) solid 1px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
     height: fit-content;
     display: flex;
     flex-direction: column;
+    max-width: 240px;
     gap: 20px;
     padding: 20px;
     background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    backdrop-filter: blur(12px);
     position: fixed;
     right: 0;
     top: 0;
@@ -213,55 +213,87 @@ p {
     padding: 40px 20px;
     min-height: 300px;
     margin-top: 20px;
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
 }
 
-.num-members {
-    display: flex;
-}
-
-input[type=checkbox] {
-    margin-right: 5px;
-}
-
-.filter-section {
+.filter-group {
     display: flex;
     flex-direction: column;
+    gap: 20px;
+}
+
+.filter-dates {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* .filter-container input[type="number"] {
+    width: 30% !important;
+
+} */
+
+.filter-container input[type="number"],
+.filter-container input[type="text"] {
+    width: 90%;
     padding: 10px;
+    border-radius: 24px;
     border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 8px;
     background-color: rgba(255, 255, 255, 0.1);
-}
-
-.filter-section label {
     color: #fff;
-    font-size: 1rem;
-    margin-bottom: 8px;
+    font-size: 16px;
+    text-align: center;
 }
 
-.filter-section input {
-    padding: 8px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    border: none;
-    background-color: rgba(255, 255, 255, 0.2);
-    color: white;
-}
-
-.filter-section input::placeholder {
-    color: #d1d0d0;
+.filter-container input::placeholder {
+    font-weight: bold;
     opacity: 0.5;
+    color: #d1d0d0;
 }
 
-.filter-section input:focus {
+.filter-container input:focus {
     outline: none;
     border-color: rgba(0, 212, 255, 1);
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
-.members-checkboxes {
+.filter-label {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    display: block;
+}
+
+.members-checkboxes label {
+    color: #fff;
+    font-size: 1rem;
+    margin-right: 15px;
+}
+
+.checkbox-group {
     display: flex;
-    gap: 10px;
     flex-wrap: wrap;
+    gap: 10px;
+}
+
+.checkbox-group label {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.checkbox-group label:hover {
+    background-color: rgba(0, 212, 255, 0.1);
 }
 
 
@@ -272,14 +304,10 @@ input[type=checkbox] {
 
 
 
-@media (max-width: 840px) {
+@media (max-width: 915px) {
     header {
         flex-direction: column;
         align-items: center;
-    }
-
-    .search-bar {
-        margin: 0;
     }
 
     .title {
@@ -288,8 +316,81 @@ input[type=checkbox] {
 
 }
 
+@media (max-width: 840px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+        width: fit-content;
+    }
+
+    .title {
+        margin-bottom: 5px;
+    }
+
+    .search-bar {
+        border-radius: 24px 0 0 24px;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        font-size: 12px;
+        min-width: 200px;
+    }
+
+    .cards {
+        gap: 5px;
+        margin-right: 250px;
+    }
+
+    .filter-dates {
+        flex-direction: column;
+        gap: 5px;
+        font-size: 0.8rem
+    }
+
+    .card {
+        padding: 10px 5px;
+        width: 130px;
+        min-height: 225px;
+    }
+
+    .banner-image {
+        height: 130px;
+        width: 130px;
+    }
+
+    /* Place the filter form at the top */
+    .filter-container {
+        /* position: relative; */
+        margin-right: 0;
+        max-width: 200px;
+        margin: 20px auto;
+        padding: 20px;
+        flex-direction: row;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .filter-group {
+        width: 100%;
+    }
+}
+
+
 /* Responsive Styling */
 @media (max-width: 600px) {
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .cards {
+        gap: 5px;
+        margin-right: 0px;
+    }
+
     .filter-group {
         flex-direction: column;
         gap: 15px;
@@ -298,6 +399,28 @@ input[type=checkbox] {
     .filter-container input[type="number"],
     .filter-container input[type="text"] {
         max-width: 100%;
+    }
+
+    /* Make filter form fully responsive */
+    .filter-container {
+        position: relative;
+        max-width: 80%;
+        width: 80%;
+        margin: 0 auto 20px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .filter-container input[type="number"],
+    .filter-container input[type="text"] {
+        width: 100%;
+    }
+
+    .filter-group {
+        flex-direction: column;
+        width: 100%;
     }
 }
 
@@ -314,6 +437,11 @@ input[type=checkbox] {
         margin: 8px 0 0 0;
     }
 
+    .cards {
+        gap: 5px;
+        margin-right: 0px;
+    }
+
     .search-bar {
         min-width: 200px;
         padding: 5px 8px;
@@ -323,5 +451,40 @@ input[type=checkbox] {
         background-color: rgba(255, 255, 255, 0.1);
         color: #fff;
         font-size: 14px;
+    }
+
+    header {
+        margin: 0;
+    }
+
+    /* More compact view for small screens */
+    .filter-container {
+        /* position: static; */
+        /* max-width: 100%; */
+        /* width: 100%; */
+        margin: 10px 0;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 0 auto 10px;
+    }
+
+    .filter-group {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .filter-container input[type="number"],
+    .filter-container input[type="text"] {
+        width: 80%;
+    }
+
+    .filter-dates {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
     }
 }
