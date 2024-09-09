@@ -15,11 +15,8 @@ func FilterData(
 	firstAlbumMin, firstAlbumMax int,
 	location string,
 	members []int,
-) ([]models.Artist, []models.Location) {
-	var (
-		filteredArtists   []models.Artist
-		filteredLocations []models.Location
-	)
+) []models.Artist {
+	var filteredArtists []models.Artist
 	id := []int{}
 	for _, artist := range data.Artists {
 		// Filter by creation date, only if the range is valid
@@ -41,31 +38,20 @@ func FilterData(
 			continue
 		}
 
-		if !Exist(id, artist.ID) {
+		if !Exist(id, artist.ID) && Checklocation(artist.ID, location, id, data.Locations) {
 			id = append(id, artist.ID)
+		} else {
+			continue
 		}
+
 	}
 	// Filter locations
-	if ExistData(location) {
-		for _, places := range data.Locations {
-			for _, place := range places.Locations {
-				if strings.Contains(strings.ToLower(place), strings.ToLower(location)) {
-					fmt.Println("location:", location)
-					artist, err := FetchArtist(strconv.Itoa(places.ID))
-					if err != nil {
-						fmt.Println("Error fetching artist:", err)
-						continue
-					}
-					if !Exist(id, artist.ID) {
-						id = append(id, artist.ID)
-					}
-					continue
-				}
-			}
-		}
+	for _, id2 := range id {
+		artist, _ := FetchArtist(strconv.Itoa(id2))
+		filteredArtists = append(filteredArtists, artist)
 	}
 	fmt.Println(filteredArtists)
-	return filteredArtists, filteredLocations
+	return filteredArtists
 }
 
 // intInSlice checks if an integer is in a slice
@@ -86,3 +72,28 @@ func Exist(ids []int, nb int) bool {
 	}
 	return false
 }
+
+func Checklocation(id1 int, location string, ids []int, locations []models.Location) bool {
+	if location == "" {
+		return true
+	}
+	for _, artist := range locations {
+		// for _, v := range artist.ID {
+		if artist.ID == id1 {
+			for _, place := range artist.Locations {
+				if strings.Contains(strings.ToLower(place), strings.ToLower(location)) {
+					if !Exist(ids, artist.ID) {
+						return true
+					}
+					continue
+				}
+			}
+		}
+		// }
+	}
+	return false
+}
+
+// if artist.ID == id1 {
+
+// }

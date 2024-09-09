@@ -96,12 +96,12 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 
 		location := r.URL.Query().Get("location")
 		// Filter the data using the provided criteria
-		filteredData, filteredLocation := utils.FilterData(data.CombinedData, creationDateMin, creationDateMax, firstAlbumMin, firstAlbumMax, location, members)
+		filteredData := utils.FilterData(data.CombinedData, creationDateMin, creationDateMax, firstAlbumMin, firstAlbumMax, location, members)
 
 		// Create a new CombinedData structure for To_displayed
 		allData.To_displayed = models.CombinedData{
-			Artists:   filteredData,     // Set filtered artists
-			Locations: filteredLocation, // Keep original locations, dates, relations
+			Artists:   filteredData,                // Set filtered artists
+			Locations: data.CombinedData.Locations, // Keep original locations, dates, relations
 			Dates:     data.CombinedData.Dates,
 			Relations: data.CombinedData.Relations,
 		}
