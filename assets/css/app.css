@@ -476,7 +476,7 @@ p {
         gap: 10px;
     }
 
-    .filter-container input[type="number"],
+    .filter-container input[type="number"], 
     .filter-container input[type="text"] {
         width: 80%;
     }

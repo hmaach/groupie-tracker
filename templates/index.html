@@ -19,13 +19,13 @@
             <form action="/search" method="get">
                 <div class="search-container">
                     <div class="search">
-                        <input list="ice-cream-flavors" type="text" id="search"
+                        <input list="artists-datalist" type="text" id="search"
                             name="Search" class="search-bar"
                             placeholder="Search for an artist...">
                         <button type="submit"
                             class="btn search-btn">Search</button>
                     </div>
-                    <datalist id="ice-cream-flavors">
+                    <datalist id="artists-datalist">
                         {{range .For_search.Artists}}
                         <option value="{{.Name}}">Name</option>
                         <option value="{{.CreationDate}}">Creation-Date</option>
@@ -94,7 +94,9 @@
                             <label><input type="checkbox" name="members"
                                     value="5"> 5</label>
                             <label><input type="checkbox" name="members"
-                                    value="6"> +6</label>
+                                    value="6"> 6</label>
+                            <label><input type="checkbox" name="members"
+                                    value="7"> 7</label>
                         </div>
                     </div>
                 </div>

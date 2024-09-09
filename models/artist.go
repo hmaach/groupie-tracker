@@ -19,9 +19,13 @@ type ArtistsPageData struct {
 
 // CombinedData structure to hold all fetched data.
 type CombinedData struct {
-    Artists   []Artist   
-    Locations []Location 
-    Dates     []Date     
-    Relations []Relation 
+	Artists   []Artist
+	Locations []Location
+	Dates     []Date
+	Relations []Relation
 }
 
+type Output struct {
+	To_displayed CombinedData
+	For_search   CombinedData
+}

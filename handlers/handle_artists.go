@@ -43,7 +43,7 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 // It fetches a summary list of all artists, assigns a type based on the number of members,
 // and renders the index page. If any errors occur, it renders the appropriate error page.
 func MainHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
+	if r.URL.Path != "/" && r.URL.Path != "/filter" {
 		RenderError(w, http.StatusNotFound, "404 | The page you are looking for does not exist.")
 		return
 	}
@@ -53,13 +53,55 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	type Output struct {
-		To_displayed models.CombinedData
-		For_search   models.CombinedData
-	}
-	affiche := Output{
-		To_displayed: data.CombinedData,
-		For_search:   data.CombinedData,
+	var allData models.Output
+	allData.For_search = data.CombinedData
+
+	if r.URL.Path == "/filter" {
+		// Parse query parameters for range filters with error handling
+		creationDateMin, err := strconv.Atoi(r.URL.Query().Get("creation-date-min"))
+		if err != nil {
+			creationDateMin = 1950
+		}
+
+		creationDateMax, err := strconv.Atoi(r.URL.Query().Get("creation-date-max"))
+		if err != nil {
+			creationDateMax = 2024
+		}
+
+		firstAlbumMin, err := strconv.Atoi(r.URL.Query().Get("first-album-min"))
+		if err != nil {
+			firstAlbumMin = 1950
+		}
+
+		firstAlbumMax, err := strconv.Atoi(r.URL.Query().Get("first-album-max"))
+		if err != nil {
+			firstAlbumMax = 2024
+		}
+
+		// Get members filter
+		membersStr := r.URL.Query()["members"]
+		var members []int
+		for _, ms := range membersStr {
+			memberVal, err := strconv.Atoi(ms)
+			if err == nil {
+				members = append(members, memberVal)
+			}
+		}
+
+		location := r.URL.Query().Get("location")
+
+		// Filter the data using the provided criteria
+		filteredData := utils.FilterData(data.CombinedData, creationDateMin, creationDateMax, firstAlbumMin, firstAlbumMax, location, members)
+
+		// Create a new CombinedData structure for To_displayed
+		allData.To_displayed = models.CombinedData{
+			Artists:   filteredData,                // Set filtered artists
+			Locations: data.CombinedData.Locations, // Keep original locations, dates, relations
+			Dates:     data.CombinedData.Dates,
+			Relations: data.CombinedData.Relations,
+		}
+	} else {
+		allData.To_displayed = data.CombinedData
 	}
 
 	// Set the Type field based on the number of members
@@ -71,7 +113,7 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if err := RenderTemplate(w, "index.html", http.StatusOK, affiche); err != nil {
+	if err := RenderTemplate(w, "index.html", http.StatusOK, allData); err != nil {
 		RenderError(w, http.StatusInternalServerError, "500 | Failed to render the page.")
 		return
 	}
