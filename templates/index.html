@@ -1,132 +1,220 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/assets/css/app.css">
-        <link rel="shortcut icon" href="/assets/static/favicon.ico"
-            type="image/x-icon">
-        <title>Groupie Tracker</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/css/app.css">
+    <link rel="shortcut icon" href="/assets/static/favicon.ico" type="image/x-icon">
+    <title>Groupie Tracker</title>
+</head>
 
-    <body>
-        <header>
-            <div class="title-container">
-                <a href="/" class="title">Groupie Tracker</a>
-            </div>
+<body>
+    <header>
+        <div class="title-container">
+            <a href="/" class="title">Groupie Tracker</a>
+        </div>
 
-            <form action="/search" method="get">
-                <div class="search-container">
-                    <div class="search">
-                        <input list="artists-datalist" type="text" id="search"
-                            name="Search" class="search-bar"
-                            placeholder="Search for an artist...">
-                        <button type="submit"
-                            class="btn search-btn">Search</button>
-                    </div>
-                    <datalist id="artists-datalist">
-                        {{range .For_search.Artists}}
-                        <option value="{{.Name}}">Name</option>
-                        <option value="{{.CreationDate}}">Creation-Date</option>
-                        <option value="{{.FirstAlbum}}">First-album</option>
-                        {{range .Members}}
-                        <option value=" {{.}}">Member</option>
-                        {{end}}
-                        {{end}}
-                        {{range .For_search.Locations}}
-                        {{range .Locations}}
-                        <option value="{{.}}">Location</option>
-                        {{end}}
-                        {{end}}
-                    </datalist>
-                    <div id="suggestions" class="suggestions-container"></div>
+        <form action="/search" method="get">
+            <div class="search-container">
+                <div class="search">
+                    <input list="artists-datalist" type="text" id="search" name="Search" class="search-bar"
+                        placeholder="Search for an artist...">
+                    <button type="submit" class="btn search-btn">Search</button>
                 </div>
-            </form>
-        </header>
-        <div class="container">
-            <form action="/filter" method="get" class="filter-container">
-                <div class="filter-group">
-                    <div class="creation-date">
-                        <label class="filter-label"
-                            for="creation-date-min">Creation Date</label>
-                        <div class="filter-dates">
-                            <input type="number" id="creation-date-min"
-                                name="creation-date-min" placeholder="Min"
-                                min="1950" max="2024">
-                            <input type="number" id="creation-date-max"
-                                name="creation-date-max" placeholder="Max"
-                                min="1950" max="2024">
-                        </div>
-                    </div>
-                    <div class="first-album">
-                        <label class="filter-label" for="first-album-min">First
-                            Album</label>
-                        <div class="filter-dates">
-                            <input type="number" id="first-album-min"
-                                name="first-album-min" placeholder="Min"
-                                min="1950"
-                                max="2024">
-                            <input type="number" id="first-album-max"
-                                name="first-album-max" placeholder="Max"
-                                min="1950"
-                                max="2024">
-                        </div>
-                    </div>
-                    <div class="location">
-                        <label class="filter-label"
-                            for="location">Location</label>
-                        <input list="locations-list" type="text" id="location"
-                            name="location" placeholder="Filter by location...">
-                    </div>
-                    <div class="members">
-                        <label class="filter-label" for="num-members">Nº
-                            Members</label>
-                        <div class="checkbox-group" id="num-members">
-                            <label><input type="checkbox" name="members"
-                                    value="1"> 1</label>
-                            <label><input type="checkbox" name="members"
-                                    value="2"> 2</label>
-                            <label><input type="checkbox" name="members"
-                                    value="3"> 3</label>
-                            <label><input type="checkbox" name="members"
-                                    value="4"> 4</label>
-                            <label><input type="checkbox" name="members"
-                                    value="5"> 5</label>
-                            <label><input type="checkbox" name="members"
-                                    value="6"> 6</label>
-                            <label><input type="checkbox" name="members"
-                                    value="7"> 7</label>
-                        </div>
-                    </div>
-                </div>
-                <button type="submit" class="btn filter-btn">Apply
-                    Filter</button>
-            </form>
-            <div class="cards">
-                {{if gt (len .To_displayed.Artists) 0}}
-                {{range .To_displayed.Artists}}
-                {{if ne .ID 0}}
-                <a class="card" href="/artist/{{.ID}}">
-                    <div class="wrapper">
-                        <img class="banner-image" src="{{.Image}}"
-                            alt="{{.Name}}">
-                        <div class="card-info">
-                            <h1>{{.Name}}</h1>
-                            <p>{{.Type}}</p>
-                        </div>
-                    </div>
-                </a>
-                {{end}}
-                {{end}}
-                {{else}}
-                <div class="no-data">
-                    <p>There's no Artist/Band to display !</p>
-                </div>
-                {{end}}
+                <datalist id="artists-datalist">
+                    {{range .For_search.Artists}}
+                    <option value="{{.Name}}">Name</option>
+                    <option value="{{.CreationDate}}">Creation-Date</option>
+                    <option value="{{.FirstAlbum}}">First-album</option>
+                    {{range .Members}}
+                    <option value=" {{.}}">Member</option>
+                    {{end}}
+                    {{end}}
+                    {{range .For_search.Locations}}
+                    {{range .Locations}}
+                    <option value="{{.}}">Location</option>
+                    {{end}}
+                    {{end}}
+                </datalist>
+                <div id="suggestions" class="suggestions-container"></div>
             </div>
+        </form>
+    </header>
+    <div class="container">
+        <form action="/filter" method="get" class="filter-container">
+            <div class="filter-group">
+                <div class="creation-date">
+                    <label class="filter-label" for="creation-date-min">Creation Date</label>
+                    <div class="filter-dates">
+                        <input type="number" id="creation-date-min" name="creation-date-min" placeholder="Min"
+                            min="1950" max="2024">
+                        <input type="number" id="creation-date-max" name="creation-date-max" placeholder="Max"
+                            min="1950" max="2024">
+                    </div>
+                </div>
+                <div class="first-album">
+                    <label class="filter-label" for="first-album-min">First
+                        Album</label>
+                    <div class="filter-dates">
+                        <input type="number" id="first-album-min" name="first-album-min" placeholder="Min" min="1950"
+                            max="2024">
+                        <input type="number" id="first-album-max" name="first-album-max" placeholder="Max" min="1950"
+                            max="2024">
+                    </div>
+                </div>
+                <div class="location">
+                    <select name="location" placeholder="Filter by location...">
+                        <option name="location" value="">Select...</option>
+                        <option name="location" value="USA">USA</option>
+                        <option name="location" value="USA_California">California, USA</option>
+                        <option name="location" value="USA_Texas">Texas, USA</option>
+                        <option name="location" value="USA_New_York">New York, USA</option>
+                        <option name="location" value="Japan">Japan</option>
+                        <option name="location" value="Japan_Tokyo">Tokyo, Japan</option>
+                        <option name="location" value="Japan_Osaka">Osaka, Japan</option>
+                        <option name="location" value="Japan_Kyoto">Kyoto, Japan</option>
+                        <option name="location" value="New_Zealand">New Zealand</option>
+                        <option name="location" value="New_Zealand_Auckland">Auckland, New Zealand</option>
+                        <option name="location" value="New_Zealand_Wellington">Wellington, New Zealand</option>
+                        <option name="location" value="New_Zealand_Christchurch">Christchurch, New Zealand</option>
+                        <option name="location" value="Mexico">Mexico</option>
+                        <option name="location" value="Mexico_Mexico_City">Mexico City, Mexico</option>
+                        <option name="location" value="Mexico_Guadalajara">Guadalajara, Mexico</option>
+                        <option name="location" value="Mexico_Monterrey">Monterrey, Mexico</option>
+                        <option name="location" value="French_Polynesia">French Polynesia</option>
+                        <option name="location" value="French_Polynesia_Tahiti">Tahiti, French Polynesia</option>
+                        <option name="location" value="French_Polynesia_Bora_Bora">Bora Bora, French Polynesia</option>
+                        <option name="location" value="French_Polynesia_Moorea">Moorea, French Polynesia</option>
+                        <option name="location" value="New_Caledonia">New Caledonia</option>
+                        <option name="location" value="New_Caledonia_Noumea">Nouméa, New Caledonia</option>
+                        <option name="location" value="New_Caledonia_Lifou">Lifou, New Caledonia</option>
+                        <option name="location" value="New_Caledonia_Mare">Mare, New Caledonia</option>
+                        <option name="location" value="UK">UK</option>
+                        <option name="location" value="UK_England">England, UK</option>
+                        <option name="location" value="UK_Scotland">Scotland, UK</option>
+                        <option name="location" value="UK_Wales">Wales, UK</option>
+                        <option name="location" value="Switzerland">Switzerland</option>
+                        <option name="location" value="Switzerland_Zurich">Zurich, Switzerland</option>
+                        <option name="location" value="Switzerland_Geneva">Geneva, Switzerland</option>
+                        <option name="location" value="Switzerland_Bern">Bern, Switzerland</option>
+                        <option name="location" value="France">France</option>
+                        <option name="location" value="France_Paris">Paris, France</option>
+                        <option name="location" value="France_Lyon">Lyon, France</option>
+                        <option name="location" value="France_Marseille">Marseille, France</option>
+                        <option name="location" value="Australia">Australia</option>
+                        <option name="location" value="Australia_Sydney">Sydney, Australia</option>
+                        <option name="location" value="Australia_Melbourne">Melbourne, Australia</option>
+                        <option name="location" value="Australia_Brisbane">Brisbane, Australia</option>
+                        <option name="location" value="Germany">Germany</option>
+                        <option name="location" value="Germany_Berlin">Berlin, Germany</option>
+                        <option name="location" value="Germany_Munich">Munich, Germany</option>
+                        <option name="location" value="Germany_Frankfurt">Frankfurt, Germany</option>
+                        <option name="location" value="Brazil">Brazil</option>
+                        <option name="location" value="Brazil_Sao_Paulo">São Paulo, Brazil</option>
+                        <option name="location" value="Brazil_Rio_de_Janeiro">Rio de Janeiro, Brazil</option>
+                        <option name="location" value="Brazil_Brasilia">Brasília, Brazil</option>
+                        <option name="location" value="Canada">Canada</option>
+                        <option name="location" value="Canada_Toronto">Toronto, Canada</option>
+                        <option name="location" value="Canada_Vancouver">Vancouver, Canada</option>
+                        <option name="location" value="Canada_Montreal">Montreal, Canada</option>
+                        <option name="location" value="Denmark">Denmark</option>
+                        <option name="location" value="Denmark_Copenhagen">Copenhagen, Denmark</option>
+                        <option name="location" value="Denmark_Aarhus">Aarhus, Denmark</option>
+                        <option name="location" value="Denmark_Odense">Odense, Denmark</option>
+                        <option name="location" value="Spain">Spain</option>
+                        <option name="location" value="Spain_Madrid">Madrid, Spain</option>
+                        <option name="location" value="Spain_Barcelona">Barcelona, Spain</option>
+                        <option name="location" value="Spain_Valencia">Valencia, Spain</option>
+                        <option name="location" value="Italy">Italy</option>
+                        <option name="location" value="Italy_Rome">Rome, Italy</option>
+                        <option name="location" value="Italy_Milan">Milan, Italy</option>
+                        <option name="location" value="Italy_Florence">Florence, Italy</option>
+                        <option name="location" value="Austria">Austria</option>
+                        <option name="location" value="Austria_Vienna">Vienna, Austria</option>
+                        <option name="location" value="Austria_Salzburg">Salzburg, Austria</option>
+                        <option name="location" value="Austria_Innsbruck">Innsbruck, Austria</option>
+                        <option name="location" value="Poland">Poland</option>
+                        <option name="location" value="Poland_Warsaw">Warsaw, Poland</option>
+                        <option name="location" value="Poland_Krakow">Kraków, Poland</option>
+                        <option name="location" value="Poland_Gdansk">Gdańsk, Poland</option>
+                        <option name="location" value="Argentina">Argentina</option>
+                        <option name="location" value="Argentina_Buenos_Aires">Buenos Aires, Argentina</option>
+                        <option name="location" value="Argentina_Cordoba">Córdoba, Argentina</option>
+                        <option name="location" value="Argentina_Mendoza">Mendoza, Argentina</option>
+                        <option name="location" value="Sweden">Sweden</option>
+                        <option name="location" value="Sweden_Stockholm">Stockholm, Sweden</option>
+                        <option name="location" value="Sweden_Gothenburg">Gothenburg, Sweden</option>
+                        <option name="location" value="Sweden_Malmo">Malmö, Sweden</option>
+                        <option name="location" value="Colombia">Colombia</option>
+                        <option name="location" value="Colombia_Bogota">Bogotá, Colombia</option>
+                        <option name="location" value="Colombia_Medellin">Medellín, Colombia</option>
+                        <option name="location" value="Colombia_Cali">Cali, Colombia</option>
+                        <option name="location" value="Czechia">Czechia</option>
+                        <option name="location" value="Czechia_Prague">Prague, Czechia</option>
+                        <option name="location" value="Czechia_Brno">Brno, Czechia</option>
+                        <option name="location" value="Czechia_Ostrava">Ostrava, Czechia</option>
+                        <option name="location" value="South_Korea">South Korea</option>
+                        <option name="location" value="South_Korea_Seoul">Seoul, South Korea</option>
+                        <option name="location" value="South_Korea_Busan">Busan, South Korea</option>
+                        <option name="location" value="South_Korea_Incheon">Incheon, South Korea</option>
+                        <option name="location" value="Taiwan">Taiwan</option>
+                        <option name="location" value="Taiwan_Taipei">Taipei, Taiwan</option>
+                        <option name="location" value="Taiwan_Kaohsiung">Kaohsiung, Taiwan</option>
+                        <option name="location" value="Taiwan_Taichung">Taichung, Taiwan</option>
+                        <option name="location" value="Thailand">Thailand</option>
+                        <option name="location" value="Thailand_Bangkok">Bangkok, Thailand</option>
+                        <option name="location" value="Thailand_Chiang_Mai">Chiang Mai, Thailand</option>
+                        <option name="location" value="Thailand_Phuket">Phuket, Thailand</option>
+                        <option name="location" value="United_Arab_Emirates">United Arab Emirates</option>
+                        <option name="location" value="United_Arab_Emirates_Abu_Dhabi">Abu Dhabi, United Arab Emirates</option>
+                        <option name="location" value="United_Arab_Emirates_Dubai">Dubai, United Arab Emirates</option>
+                        <option name="location" value="United_Arab_Emirates_Sharjah">Sharjah, United Arab Emirates</option>
+                        <option name="location" value="Finland">Finland</option>
+                        <option name="location" value="Finland_Helsinki">Helsinki, Finland</option>
+                        <option name="location" value="Finland_Tampere">Tampere, Finland</option>
+                        <option name="location" value="Finland_Turku">Turku, Finland</option>
+                        <option name="location" value="Belgium">Belgium</option>
+                        <option name="location" value="Belgium_Brussels">Brussels, Belgium</option>
+                        <option name="location" value="Belgium_Antwerp">Antwerp, Belgium</option>
+                        <option name="location" value="Belgium_Ghent">Ghent, Belgium</option>
+                        <option name="location" value="Belarus">Belarus</option>
+                        <option name="location" value="Belarus_Minsk">Minsk, Belarus</option>
+                        <option name="location" value="Belarus_Brest">
+                    </select>
+                </div>
+                <div class="members">
+                    <label class="filter-label" for="num-members">Nº
+                        Members</label>
+                    <div class="checkbox-group" id="num-members">
+                        <label><input type="checkbox" name="members" value="1"> 1</label>
+                        <label><input type="checkbox" name="members" value="2"> 2</label>
+                        <label><input type="checkbox" name="members" value="3"> 3</label>
+                        <label><input type="checkbox" name="members" value="4"> 4</label>
+                        <label><input type="checkbox" name="members" value="5"> 5</label>
+                        <label><input type="checkbox" name="members" value="6"> 6</label>
+                        <label><input type="checkbox" name="members" value="7"> 7</label>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn filter-btn">Apply
+                Filter</button>
+        </form>
+        <div class="cards">
+            {{range .To_displayed.Artists}}
+            <a class="card" href="/artist/{{.ID}}">
+                <div class="wrapper">
+                    <img class="banner-image" src="{{.Image}}" alt="{{.Name}}">
+                    <div class="card-info">
+                        <h1>{{.Name}}</h1>
+                        <p>{{.Type}}</p>
+                    </div>
+                </div>
+            </a>
+            {{end}}
 
         </div>
-    </body>
+    </div>
+</body>
 
 </html>

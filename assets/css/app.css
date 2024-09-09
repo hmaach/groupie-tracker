@@ -235,8 +235,14 @@ p {
 
 } */
 
+option {
+    color: #000;
+    border-radius: 5px;
+}
+
 .filter-container input[type="number"],
-.filter-container input[type="text"] {
+.filter-container input[type="text"],
+select {
     width: 90%;
     padding: 10px;
     border-radius: 24px;

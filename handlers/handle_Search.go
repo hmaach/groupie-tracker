@@ -27,12 +27,12 @@ func Search(w http.ResponseWriter, r *http.Request) {
 	var Newdata models.CombinedData
 	for _, l := range data.Artists {
 		if (strings.Contains(strings.ToLower(l.Name), Key)) || strings.ToLower(l.FirstAlbum) == Key || strconv.Itoa(l.CreationDate) == Key {
-			if !exist(id, l.ID) {
+			if !Exist(id, l.ID) {
 				id = append(id, l.ID)
 			}
 		}
 		for _, M := range l.Members {
-			if strings.Contains(strings.ToLower(M), Key) && !exist(id, l.ID) {
+			if strings.Contains(strings.ToLower(M), Key) && !Exist(id, l.ID) {
 				id = append(id, l.ID)
 			}
 		}
@@ -41,7 +41,7 @@ func Search(w http.ResponseWriter, r *http.Request) {
 	for _, j := range data.Locations.Index {
 		for _, J := range j.Locations {
 			if strings.Contains(J, Key) {
-				if !exist(id, j.ID) {
+				if !Exist(id, j.ID) {
 					id = append(id, j.ID)
 				}
 			}
@@ -49,12 +49,16 @@ func Search(w http.ResponseWriter, r *http.Request) {
 		for _, j := range data.Dates.Index {
 			for _, i := range j.Dates {
 				if strings.ToLower(i) == Key {
-					if !exist(id, j.ID) {
+					if !Exist(id, j.ID) {
 						id = append(id, j.ID)
 					}
 				}
 			}
 		}
+	}
+	if len(id) == 0 {
+		RenderError(w, http.StatusAccepted, "NO artists")
+		return
 	}
 	for _, ids := range id {
 		new, err := utils.FetchArtist(strconv.Itoa(ids))
@@ -81,7 +85,7 @@ func Search(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func exist(ids []int, nb int) bool {
+func Exist(ids []int, nb int) bool {
 	for _, id := range ids {
 		if id == nb {
 			return true

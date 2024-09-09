@@ -71,10 +71,6 @@ func FetchArtist(id string) (models.Artist, error) {
 		}
 	}
 
-	if artist.ID == 0 {
-		return models.Artist{}, errors.New("404")
-	}
-
 	var loca models.Location
 	for _, loc := range data.Locations.Index {
 		if loc.ID == newid {
@@ -96,6 +92,9 @@ func FetchArtist(id string) (models.Artist, error) {
 	artist.Location = loca
 	artist.Date = date
 	artist.Relation = rel
+	if artist.ID == 0 {
+		return artist, errors.New("There's no Artist/Band to display !")
+	}
 
 	return artist, nil
 }

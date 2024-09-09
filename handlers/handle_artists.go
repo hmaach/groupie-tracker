@@ -77,6 +77,12 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			firstAlbumMax = 2024
 		}
+		if creationDateMin > creationDateMax {
+			creationDateMin, creationDateMax = creationDateMax, creationDateMin
+		}
+		if firstAlbumMin > firstAlbumMax {
+			firstAlbumMin, firstAlbumMax = firstAlbumMax, firstAlbumMin
+		}
 
 		// Get members filter
 		membersStr := r.URL.Query()["members"]
@@ -89,14 +95,13 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		location := r.URL.Query().Get("location")
-
 		// Filter the data using the provided criteria
-		filteredData := utils.FilterData(data.CombinedData, creationDateMin, creationDateMax, firstAlbumMin, firstAlbumMax, location, members)
+		filteredData, filteredLocation := utils.FilterData(data.CombinedData, creationDateMin, creationDateMax, firstAlbumMin, firstAlbumMax, location, members)
 
 		// Create a new CombinedData structure for To_displayed
 		allData.To_displayed = models.CombinedData{
-			Artists:   filteredData,                // Set filtered artists
-			Locations: data.CombinedData.Locations, // Keep original locations, dates, relations
+			Artists:   filteredData,     // Set filtered artists
+			Locations: filteredLocation, // Keep original locations, dates, relations
 			Dates:     data.CombinedData.Dates,
 			Relations: data.CombinedData.Relations,
 		}
