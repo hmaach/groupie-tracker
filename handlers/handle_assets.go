@@ -16,13 +16,27 @@ func AssetsHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Serve the asset file
 	filePath := "./assets" + strings.TrimPrefix(r.URL.Path, "/assets")
-	_, err := os.Stat(filePath)
-	if os.IsNotExist(err) {
-		// File does not exist, use custom 404 page
+	if !isFileExists(filePath) {
+		// If the requested file or path does not exist, render a styled 404 page
 		RenderError(w, http.StatusNotFound, "404 | Page Not Found")
 		return
 	}
 
 	// File exists, serve it
 	http.ServeFile(w, r, filePath)
+}
+
+// isFileExists checks if a file exists at the given path
+func isFileExists(filePath string) bool {
+	if filePath == "" {
+		// Prevent checking an empty path
+		return false
+	}
+
+	info, err := os.Stat(filePath)
+	if err != nil || info.IsDir() {
+		// Return false if the file doesn't exist or it's a directory
+		return false
+	}
+	return true
 }

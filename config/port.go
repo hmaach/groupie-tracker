@@ -1,3 +1,3 @@
 package config
 
-const Port = ":9090"
+const Port = ":8080"

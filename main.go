@@ -39,7 +39,7 @@ func main() {
 	handlers.ParseTemplates()
 
 	// Route handlers
-	http.HandleFunc("/", handlers.MainHandler)              // Root route (home page)
+	http.HandleFunc("/", handlers.MainHandler) // Root route (home page)
 	http.HandleFunc("/filter", handlers.MainHandler)
 	http.HandleFunc("/artist/{id}", handlers.ArtistHandler) // Artist detail page
 	http.HandleFunc("/search", handlers.Search)

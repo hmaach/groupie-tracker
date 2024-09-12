@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 
@@ -50,7 +49,7 @@ func FilterData(
 		artist, _ := FetchArtist(strconv.Itoa(id2))
 		filteredArtists = append(filteredArtists, artist)
 	}
-	fmt.Println(filteredArtists)
+	// fmt.Println(filteredArtists)
 	return filteredArtists
 }
 

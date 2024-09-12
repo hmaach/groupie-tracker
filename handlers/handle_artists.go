@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 	"strconv"
+	"strings"
 
 	"groupie_tracker/data"
 	"groupie_tracker/models"
@@ -58,30 +59,30 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 
 	if r.URL.Path == "/filter" {
 		// Parse query parameters for range filters with error handling
-		creationDateMin, err := strconv.Atoi(r.URL.Query().Get("creation-date-min"))
+		creationDate1, err := strconv.Atoi(r.URL.Query().Get("creation-date-1"))
 		if err != nil {
-			creationDateMin = 1950
+			creationDate1 = 1950
 		}
 
-		creationDateMax, err := strconv.Atoi(r.URL.Query().Get("creation-date-max"))
+		creationDate2, err := strconv.Atoi(r.URL.Query().Get("creation-date-2"))
 		if err != nil {
-			creationDateMax = 2024
+			creationDate2 = 2024
 		}
 
-		firstAlbumMin, err := strconv.Atoi(r.URL.Query().Get("first-album-min"))
+		firstAlbum1, err := strconv.Atoi(r.URL.Query().Get("first-album-1"))
 		if err != nil {
-			firstAlbumMin = 1950
+			firstAlbum1 = 1950
 		}
 
-		firstAlbumMax, err := strconv.Atoi(r.URL.Query().Get("first-album-max"))
+		firstAlbum2, err := strconv.Atoi(r.URL.Query().Get("first-album-2"))
 		if err != nil {
-			firstAlbumMax = 2024
+			firstAlbum2 = 2024
 		}
-		if creationDateMin > creationDateMax {
-			creationDateMin, creationDateMax = creationDateMax, creationDateMin
+		if creationDate1 > creationDate2 {
+			creationDate1, creationDate2 = creationDate2, creationDate1
 		}
-		if firstAlbumMin > firstAlbumMax {
-			firstAlbumMin, firstAlbumMax = firstAlbumMax, firstAlbumMin
+		if firstAlbum1 > firstAlbum2 {
+			firstAlbum1, firstAlbum2 = firstAlbum2, firstAlbum1
 		}
 
 		// Get members filter
@@ -95,13 +96,14 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		location := r.URL.Query().Get("location")
+		location = strings.ReplaceAll(location, ", ", "-")
 		// Filter the data using the provided criteria
-		filteredData := utils.FilterData(data.CombinedData, creationDateMin, creationDateMax, firstAlbumMin, firstAlbumMax, location, members)
+		filteredData := utils.FilterData(data.CombinedData, creationDate1, creationDate2, firstAlbum1, firstAlbum2, location, members)
 
 		// Create a new CombinedData structure for To_displayed
 		allData.To_displayed = models.CombinedData{
-			Artists:   filteredData,                // Set filtered artists
-			Locations: data.CombinedData.Locations, // Keep original locations, dates, relations
+			Artists:   filteredData,           // Set filtered artists
+			Locations: utils.FetchLocations(), // Keep original locations, dates, relations
 			Dates:     data.CombinedData.Dates,
 			Relations: data.CombinedData.Relations,
 		}

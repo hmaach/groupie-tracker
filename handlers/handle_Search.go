@@ -67,7 +67,7 @@ func Search(w http.ResponseWriter, r *http.Request) {
 		}
 		Newdata.Artists = append(Newdata.Artists, new)
 	}
-
+	Newdata.Locations = utils.FetchLocations()
 	type Output struct {
 		To_displayed models.CombinedData
 		For_search   models.CombinedData
@@ -75,8 +75,9 @@ func Search(w http.ResponseWriter, r *http.Request) {
 
 	// Create a variable of type Output and initialize it
 	affiche := Output{
-		To_displayed: Newdata,           // Ensure Newdata is of type models.CombinedData
-		For_search:   data.CombinedData, // Ensure data.CombinedData is of type models.CombinedData
+		To_displayed: Newdata, // Ensure Newdata is of type models.CombinedData
+		For_search:   data.CombinedData,
+		// Ensure data.CombinedData is of type models.CombinedData
 	}
 
 	if err := RenderTemplate(w, "index.html", http.StatusOK, affiche); err != nil {
